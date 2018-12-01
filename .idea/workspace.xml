@@ -2,9 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="17cde79b-ffca-4ddd-b2d0-77537d2d51bc" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code" beforeDir="false" afterPath="$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code/poker/simple_poker.py" beforeDir="false" afterPath="$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code/poker/simple_poker.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code/robot/Random_Agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code/robot/Random_Agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab2/lab2" beforeDir="false" afterPath="$PROJECT_DIR$/lab2/lab2" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lab2/lab2/poker_game_example.py" beforeDir="false" afterPath="$PROJECT_DIR$/lab2/lab2/poker_game_example.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lab2/lab2/search_algorithm.py" beforeDir="false" afterPath="$PROJECT_DIR$/lab2/lab2/search_algorithm.py" afterDir="false" />
     </list>
@@ -15,74 +19,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lab2/lab2/poker_game_example.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
-              <caret line="385" lean-forward="true" selection-start-line="385" selection-end-line="385" />
-              <folding>
-                <element signature="e#150#170#1" />
-                <element signature="e#202#1174#0" />
-                <element signature="e#296#505#0" />
-                <element signature="e#511#573#1" />
-                <element signature="e#611#800#0" />
-                <element signature="e#806#883#1" />
-                <element signature="e#919#1174#0" />
-                <element signature="e#984#1145#0" />
-                <element signature="e#1176#1200#1" />
-                <element signature="e#1230#5350#0" />
-                <element signature="e#1579#2001#0" />
-                <element signature="e#2007#2057#1" />
-                <element signature="e#2095#2348#0" />
-                <element signature="e#2354#2414#1" />
-                <element signature="e#2458#2675#0" />
-                <element signature="e#2681#2734#1" />
-                <element signature="e#2768#3461#0" />
-                <element signature="e#2856#3184#0" />
-                <element signature="e#2945#3047#0" />
-                <element signature="e#3082#3184#0" />
-                <element signature="e#3282#3355#0" />
-                <element signature="e#3382#3461#0" />
-                <element signature="e#3561#5350#0" />
-                <element signature="e#4057#4457#0" />
-                <element signature="e#5419#5567#0" />
-                <element signature="e#5569#5624#1" />
-                <element signature="e#5663#9979#0" />
-                <element signature="e#5786#7532#0" />
-                <element signature="e#5914#7509#0" />
-                <element signature="e#6131#6576#0" />
-                <element signature="e#6632#6974#0" />
-                <element signature="e#7040#7420#0" />
-                <element signature="e#7457#7509#0" />
-                <element signature="e#7622#9979#0" />
-                <element signature="e#8615#9036#0" />
-                <element signature="e#9091#9413#0" />
-                <element signature="e#9506#9887#0" />
-                <element signature="e#9915#9957#0" />
-                <element signature="e#10008#10308#0" />
-                <element signature="e#10096#10139#0" />
-                <element signature="e#10177#10223#0" />
-                <element signature="e#10261#10308#0" />
-                <element signature="e#10506#10958#0" />
-                <element signature="e#10679#10822#0" />
-                <element signature="e#10731#10798#0" />
-                <element signature="e#10883#10958#0" />
-                <element signature="e#11018#11047#0" />
-                <element signature="e#11080#11126#0" />
-                <element signature="e#11130#11219#1" />
-                <element signature="e#11920#12465#0" />
-                <element signature="e#11943#12051#0" />
-                <element signature="e#12071#12465#0" />
-                <element signature="e#12262#12465#0" />
-                <element signature="e#12409#12465#0" />
-                <element signature="e#12687#12922#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/lab2/lab2" />
@@ -107,33 +44,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="labs" type="b2602c69:ProjectViewProjectNode" />
-              <item name="labs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="labs" type="b2602c69:ProjectViewProjectNode" />
-              <item name="labs" type="462c0819:PsiDirectoryNode" />
-              <item name="lab1" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="labs" type="b2602c69:ProjectViewProjectNode" />
-              <item name="labs" type="462c0819:PsiDirectoryNode" />
-              <item name="lab2" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="labs" type="b2602c69:ProjectViewProjectNode" />
-              <item name="labs" type="462c0819:PsiDirectoryNode" />
-              <item name="lab2" type="462c0819:PsiDirectoryNode" />
-              <item name="lab2" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -217,10 +128,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24972677" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24972677" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Version Control" />
       <window_info anchor="bottom" id="Python Console" />
@@ -228,7 +138,7 @@
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32937366" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32937366" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -239,6 +149,13 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code/poker/simple_poker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="24" lean-forward="true" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lab2/lab2/poker_game_example.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="386">
