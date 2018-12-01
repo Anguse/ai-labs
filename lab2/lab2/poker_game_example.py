@@ -291,16 +291,25 @@ def get_goal(__state):
         strength = 'good shit'
         return 'BIDDING'
 
-def search(__state, heuristic, type, search_depth):
-    goal = 200
+def search(__state, heuristic, type, goal, depth):
     frontier = sa.PriorityQueue()
     frontier.add(__state, __state.g)
-
+    steps = -1
     path = []
 
     while not frontier.isEmpty():
         _state_ = frontier.remove()
-        winnings = _state_.agent.stack - _state_.opponent.stack
+        steps += 1
+
+        # Deeper than max depth, skip state
+        if _state_.g >= depth:
+            continue
+
+        # More than 10 000 searches with random, no solution
+        if steps >= 10000 and type == "RANDOM":
+            return []
+
+        winnings = (_state_.agent.stack - _state_.opponent.stack)/2
 
         # check if the goal is reached
         if winnings >= goal:
@@ -308,19 +317,30 @@ def search(__state, heuristic, type, search_depth):
                 path.append(_state_)
                 _state_ = _state_.parent_state
             return path
-
         for state in get_next_states(_state_):
             state.g = state.parent_state.g + 1
-            frontier.add(state, state.g)
+            state.h = get_heuristic(state, heuristic)
+            state.f = state.g + state.h
+            prio = get_prio(state, type)
+            frontier.add(state, prio)
 
     return path
 
 def get_heuristic(state, heuristic):
-    # Return heuristic
-    return
+    return -state.nn_current_bidding
 
 def get_prio(state, type):
     # Return priority based on the type
+    if type == "RANDOM":
+        return random.randint(0, 100)
+    elif type == "BFS":
+        return state.g
+    elif type == "DFS":
+        return -state.g
+    elif type == "GREEDY":
+        return state.h
+    elif type == "ASTAR":
+        return state.f
     return
 
 
@@ -347,42 +367,24 @@ init_state = GameState(nn_current_hand_=0,
                        opponent_=opponent,
                        )
 init_state.dealing_cards()
-game_state_queue = []
-game_on = True
-round_init = True
 
-while game_on:
+path = search(init_state, "heuristic", "RANDOM", 100, 100)
+if len(path) == 0:
+    print "No solution found"
+else:
+    state__ = path.pop(0)
+    nn_level = 0
+    path.reverse()
 
-    if round_init:
-        round_init = False
-        states_ = get_next_states(init_state)
-        game_state_queue.extend(states_[:])
-    else:
+    print('------------ print game info ---------------')
 
-        # just an example: only expanding the last return node
-        states_ = get_next_states(states_[-1])
-        game_state_queue.extend(states_[:])
+    for state in path:
+        agent = state.agent
+        opponent = state.opponent
+        pot = state.pot
+        print "**Agent** stack:", agent.stack, "action:", agent.action, \
+            "\t|\t**Opponent** stack", opponent.stack, "action:", opponent.action
+        nn_level += 1
 
-        for _state_ in states_:
-            if _state_.phase == 'SHOWDOWN' and (_state_.opponent.stack <= 300 or _state_.agent.stack <= 300): #or _state_.MAX_HANDS >= 4):
-                    end_state_ = _state_
-                    game_on = False
-
-path = search(init_state, "heuristic", "type")
-state__ = path[0]
-nn_level = 0
-path.reverse()
-
-print('------------ print game info ---------------')
-print('nn_states_total', len(game_state_queue))
-
-for state in path:
-    agent = state.agent
-    opponent = state.opponent
-    pot = state.pot
-    print "**Agent** stack:", agent.stack, "action:", agent.action, \
-        "\t|\t**Opponent** stack", opponent.stack, "action:", opponent.action
-    nn_level += 1
-
-print(nn_level)
+    print(nn_level)
 

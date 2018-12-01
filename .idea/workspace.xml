@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="17cde79b-ffca-4ddd-b2d0-77537d2d51bc" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code" beforeDir="false" afterPath="$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code/poker/simple_poker.py" beforeDir="false" afterPath="$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code/poker/simple_poker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code/robot/Random_Agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code/robot/Random_Agent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab2/lab2" beforeDir="false" afterPath="$PROJECT_DIR$/lab2/lab2" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lab2/lab2/poker_game_example.py" beforeDir="false" afterPath="$PROJECT_DIR$/lab2/lab2/poker_game_example.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab2/lab2/search_algorithm.py" beforeDir="false" afterPath="$PROJECT_DIR$/lab2/lab2/search_algorithm.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,10 +14,132 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lab2/lab2/search_algorithm.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-478">
+              <caret line="14" selection-start-line="14" selection-end-line="14" />
+              <folding>
+                <element signature="e#126#144#0" />
+                <element signature="e#177#207#0" />
+                <element signature="e#329#367#0" />
+                <element signature="e#716#805#0" />
+                <element signature="e#752#805#0" />
+                <element signature="e#1110#1255#0" />
+                <element signature="e#1161#1237#0" />
+                <element signature="e#1793#2775#0" />
+                <element signature="e#2024#2186#0" />
+                <element signature="e#2060#2186#0" />
+                <element signature="e#2215#2377#0" />
+                <element signature="e#2251#2377#0" />
+                <element signature="e#2406#2568#0" />
+                <element signature="e#2442#2568#0" />
+                <element signature="e#2592#2754#0" />
+                <element signature="e#2628#2754#0" />
+                <element signature="e#2867#3027#0" />
+                <element signature="e#3119#3326#0" />
+                <element signature="e#3455#4608#0" />
+                <element signature="e#3899#4608#0" />
+                <element signature="e#3928#4544#0" />
+                <element signature="e#4042#4272#0" />
+                <element signature="e#4137#4272#0" />
+                <element signature="e#4348#4544#0" />
+                <element signature="e#4981#5478#0" />
+                <element signature="e#5057#5208#0" />
+                <element signature="e#5247#5478#0" />
+                <element signature="e#5281#5439#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file:///usr/lib/python2.7/random.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="168">
+              <caret line="353" selection-start-line="353" selection-end-line="353" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lab2/lab2/poker_environment.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="191">
+              <caret line="145" selection-start-line="145" selection-end-line="145" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lab2/lab2/test_case.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="10" column="35" selection-start-line="10" selection-start-column="35" selection-end-line="10" selection-end-column="35" />
+              <folding>
+                <element signature="e#0#29#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lab2/lab2/poker_game_example.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="634">
+              <caret line="380" column="22" lean-forward="true" selection-start-line="380" selection-start-column="22" selection-end-line="380" selection-end-column="22" />
+              <folding>
+                <element signature="e#150#170#1" />
+                <element signature="e#511#573#1" />
+                <element signature="e#611#800#0" />
+                <element signature="e#806#883#1" />
+                <element signature="e#919#1174#0" />
+                <element signature="e#984#1145#0" />
+                <element signature="e#1176#1200#1" />
+                <element signature="e#2007#2057#1" />
+                <element signature="e#2095#2348#0" />
+                <element signature="e#2354#2414#1" />
+                <element signature="e#2458#2675#0" />
+                <element signature="e#2681#2734#1" />
+                <element signature="e#2768#3461#0" />
+                <element signature="e#2856#3184#0" />
+                <element signature="e#2945#3047#0" />
+                <element signature="e#3082#3184#0" />
+                <element signature="e#3282#3355#0" />
+                <element signature="e#3382#3461#0" />
+                <element signature="e#3561#5350#0" />
+                <element signature="e#4057#4457#0" />
+                <element signature="e#5419#5567#0" />
+                <element signature="e#5569#5624#1" />
+                <element signature="e#5663#9979#0" />
+                <element signature="e#5786#7532#0" />
+                <element signature="e#5914#7509#0" />
+                <element signature="e#6131#6576#0" />
+                <element signature="e#6632#6974#0" />
+                <element signature="e#7040#7420#0" />
+                <element signature="e#7457#7509#0" />
+                <element signature="e#7622#9979#0" />
+                <element signature="e#8615#9036#0" />
+                <element signature="e#9091#9413#0" />
+                <element signature="e#9506#9887#0" />
+                <element signature="e#9915#9957#0" />
+                <element signature="e#10008#10308#0" />
+                <element signature="e#10096#10139#0" />
+                <element signature="e#10177#10223#0" />
+                <element signature="e#10261#10308#0" />
+                <element signature="e#10731#10798#0" />
+                <element signature="e#11295#11321#0" />
+                <element signature="e#11130#11219#1" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/lab2/lab2" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -44,12 +161,59 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="ProjectPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="ai-labs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ai-labs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ai-labs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ai-labs" type="462c0819:PsiDirectoryNode" />
+              <item name="lab1" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ai-labs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ai-labs" type="462c0819:PsiDirectoryNode" />
+              <item name="lab1" type="462c0819:PsiDirectoryNode" />
+              <item name="Lab1_Agents_code" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ai-labs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ai-labs" type="462c0819:PsiDirectoryNode" />
+              <item name="lab1" type="462c0819:PsiDirectoryNode" />
+              <item name="Lab1_Agents_code" type="462c0819:PsiDirectoryNode" />
+              <item name="Lab1_Agents_code" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ai-labs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ai-labs" type="462c0819:PsiDirectoryNode" />
+              <item name="lab1" type="462c0819:PsiDirectoryNode" />
+              <item name="Lab1_Agents_code" type="462c0819:PsiDirectoryNode" />
+              <item name="Lab1_Agents_code" type="462c0819:PsiDirectoryNode" />
+              <item name="poker" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ai-labs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ai-labs" type="462c0819:PsiDirectoryNode" />
+              <item name="lab2" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ai-labs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ai-labs" type="462c0819:PsiDirectoryNode" />
+              <item name="lab2" type="462c0819:PsiDirectoryNode" />
+              <item name="lab2" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -63,7 +227,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.simple_poker">
+  <component name="RunManager" selected="Python.poker_game_example">
     <configuration name="poker_game_example" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="labs" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -106,10 +270,32 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="test_case" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="labs" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/lab2/lab2" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lab2/lab2/test_case.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.simple_poker" />
         <item itemvalue="Python.poker_game_example" />
+        <item itemvalue="Python.test_case" />
+        <item itemvalue="Python.simple_poker" />
       </list>
     </recent_temporary>
   </component>
@@ -124,54 +310,123 @@
       <option name="presentableId" value="Default" />
       <updated>1543624571088</updated>
     </task>
+    <task id="LOCAL-00001" summary="RANDOM, GREEDY, ASTAR, DFS, BFS working but slow... ?">
+      <created>1543679492578</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1543679492578</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24972677" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24972677" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Python Console" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32937366" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39956802" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="RANDOM, GREEDY, ASTAR, DFS, BFS working but slow... ?" />
+    <option name="LAST_COMMIT_MESSAGE" value="RANDOM, GREEDY, ASTAR, DFS, BFS working but slow... ?" />
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/lab1/Lab1_Agents_code/Lab1_Agents_code/poker/simple_poker.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="24" lean-forward="true" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
+        <state relative-caret-position="195">
+          <caret line="13" column="22" lean-forward="true" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lab2/lab2/test_case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="35" selection-start-line="10" selection-start-column="35" selection-end-line="10" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python2.7/random.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="353" selection-start-line="353" selection-end-line="353" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lab2/lab2/poker_environment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="145" selection-start-line="145" selection-end-line="145" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lab2/lab2/search_algorithm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-478">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+          <folding>
+            <element signature="e#126#144#0" />
+            <element signature="e#177#207#0" />
+            <element signature="e#329#367#0" />
+            <element signature="e#716#805#0" />
+            <element signature="e#752#805#0" />
+            <element signature="e#1110#1255#0" />
+            <element signature="e#1161#1237#0" />
+            <element signature="e#1793#2775#0" />
+            <element signature="e#2024#2186#0" />
+            <element signature="e#2060#2186#0" />
+            <element signature="e#2215#2377#0" />
+            <element signature="e#2251#2377#0" />
+            <element signature="e#2406#2568#0" />
+            <element signature="e#2442#2568#0" />
+            <element signature="e#2592#2754#0" />
+            <element signature="e#2628#2754#0" />
+            <element signature="e#2867#3027#0" />
+            <element signature="e#3119#3326#0" />
+            <element signature="e#3455#4608#0" />
+            <element signature="e#3899#4608#0" />
+            <element signature="e#3928#4544#0" />
+            <element signature="e#4042#4272#0" />
+            <element signature="e#4137#4272#0" />
+            <element signature="e#4348#4544#0" />
+            <element signature="e#4981#5478#0" />
+            <element signature="e#5057#5208#0" />
+            <element signature="e#5247#5478#0" />
+            <element signature="e#5281#5439#0" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lab2/lab2/poker_game_example.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="385" lean-forward="true" selection-start-line="385" selection-end-line="385" />
+        <state relative-caret-position="634">
+          <caret line="380" column="22" lean-forward="true" selection-start-line="380" selection-start-column="22" selection-end-line="380" selection-end-column="22" />
           <folding>
             <element signature="e#150#170#1" />
-            <element signature="e#202#1174#0" />
-            <element signature="e#296#505#0" />
             <element signature="e#511#573#1" />
             <element signature="e#611#800#0" />
             <element signature="e#806#883#1" />
             <element signature="e#919#1174#0" />
             <element signature="e#984#1145#0" />
             <element signature="e#1176#1200#1" />
-            <element signature="e#1230#5350#0" />
-            <element signature="e#1579#2001#0" />
             <element signature="e#2007#2057#1" />
             <element signature="e#2095#2348#0" />
             <element signature="e#2354#2414#1" />
@@ -203,19 +458,9 @@
             <element signature="e#10096#10139#0" />
             <element signature="e#10177#10223#0" />
             <element signature="e#10261#10308#0" />
-            <element signature="e#10506#10958#0" />
-            <element signature="e#10679#10822#0" />
             <element signature="e#10731#10798#0" />
-            <element signature="e#10883#10958#0" />
-            <element signature="e#11018#11047#0" />
-            <element signature="e#11080#11126#0" />
+            <element signature="e#11295#11321#0" />
             <element signature="e#11130#11219#1" />
-            <element signature="e#11920#12465#0" />
-            <element signature="e#11943#12051#0" />
-            <element signature="e#12071#12465#0" />
-            <element signature="e#12262#12465#0" />
-            <element signature="e#12409#12465#0" />
-            <element signature="e#12687#12922#0" />
           </folding>
         </state>
       </provider>
