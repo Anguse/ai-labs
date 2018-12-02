@@ -151,7 +151,7 @@ def get_prio(next, goal, type):
     if type == "DFS":
         return -next.g
     elif type == "BFS":
-        return 0
+        return next.g
     elif type == "RANDOM":
         return random.randint(0, 100)
     elif type == "ASTAR":

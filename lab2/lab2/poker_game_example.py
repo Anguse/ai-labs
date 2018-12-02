@@ -178,7 +178,7 @@ def get_next_states(last_state):
 
 
 # Returns the path to 'goal' using 'type' search
-def search(__state, type, goal, depth):
+def search(__state, type, goal, depth, heuristic):
     frontier = sa.PriorityQueue()
     frontier.add(__state, __state.g)
     steps = -1
@@ -207,14 +207,19 @@ def search(__state, type, goal, depth):
         # Evaluate neighboring states
         for state in get_next_states(_state_):
             state.g = state.parent_state.g + 1
-            state.h = get_heuristic(state)
+            state.h = get_heuristic(state, heuristic)
             state.f = state.g + state.h
             prio = get_prio(state, type)
             frontier.add(state, prio)
 
 
-def get_heuristic(state):
-    return -state.nn_current_bidding
+def get_heuristic(state, heuristic):
+    if heuristic == "MANY BETS":
+        return -state.nn_current_bidding
+    elif heuristic == "BIG POT":
+        return -(state.agent.stack + state.pot)
+
+
 
 
 # Return priority based on the type of search
@@ -362,7 +367,7 @@ init_state = GameState(nn_current_hand_=0,
                        )
 
 init_state.dealing_cards()
-path, steps = search(init_state, "GREEDY", 100, 20)
+path, steps = search(init_state, "ASTAR", 100, 20, "BIG POT")
 if len(path) == 0:
     print "No solution found"
 else:
