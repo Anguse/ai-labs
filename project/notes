@@ -1,0 +1,25 @@
+Flow:
+	Connect to a given server
+	Server tracks game stats
+	Implement the intelligens in the agent
+	Responstime is limited, limits computation time
+	info_functions() and query_functions()
+	Report about agent
+Grade:
+	For pass: rational agent
+	grade 4: developed strategy that takes into account the other player
+
+Constraints:
+	grp of 2
+	You have to attend the pre tournament
+	Inform about group Dec 13
+	Pre tournament Jan 3
+	Final tournament Jan 8th (13:00 - 17:00) 
+
+Given code:
+	only works with Python 2.7
+	Copy Pokergame and Client so that the clients can play eachother
+	Change the name of copied client
+	Change the import in the copied Pokergame
+	~Playable
+
