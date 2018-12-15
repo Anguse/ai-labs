@@ -353,41 +353,45 @@ class GameState(object):
 
 INIT_AGENT_STACK = 400
 
-# initialize 2 agents and a game_state
-agent = PokerPlayer(current_hand_=None, stack_=INIT_AGENT_STACK, action_=None, action_value_=None)
-opponent = PokerPlayer(current_hand_=None, stack_=INIT_AGENT_STACK, action_=None, action_value_=None)
+#Simulate game for 100 times to get average amount of steps
+total_steps = 0
+for i in range(0, 100):
+    agent = PokerPlayer(current_hand_=None, stack_=INIT_AGENT_STACK, action_=None, action_value_=None)
+    opponent = PokerPlayer(current_hand_=None, stack_=INIT_AGENT_STACK, action_=None, action_value_=None)
 
-init_state = GameState(nn_current_hand_=0,
-                       nn_current_bidding_=0,
-                       phase_ = 'INIT_DEALING',
-                       pot_=0,
-                       acting_agent_=None,
-                       agent_=agent,
-                       opponent_=opponent,
-                       )
+    init_state = GameState(nn_current_hand_=0,
+                           nn_current_bidding_=0,
+                           phase_ = 'INIT_DEALING',
+                           pot_=0,
+                           acting_agent_=None,
+                           agent_=agent,
+                           opponent_=opponent,
+                           )
 
-init_state.dealing_cards()
-path, steps = search(init_state, "ASTAR", 100, 20, "BIG POT")
-if len(path) == 0:
-    print "No solution found"
-else:
-    nn_level = 0
-    path.reverse()
-    print "############################################"
-    print "\t\t Search took", steps, "steps"
-    print('------------ print game info ---------------')
-    for state in path:
-        agent = state.agent
-        opponent = state.opponent
-        val = state.opponent.action_value
-        pot = state.pot
-        info = state.showdown_info
-        hand = state.nn_current_hand
-        phase = state.phase
-        print "**Agent** stack:", agent.stack, "action:", agent.action, \
-        "\t|\t**Opponent** stack", opponent.stack, "action:", opponent.action,\
-        "\t|\t pot:",pot, "\t|\t phase:", phase
-        nn_level += 1
+    init_state.dealing_cards()
+    path, steps = search(init_state, "ASTAR", 100, 20, "BIG POT")
+    if len(path) == 0:
+        print "No solution found"
+    else:
+        nn_level = 0
+        path.reverse()
+        print "############################################"
+        print "\t\t Search took", steps, "steps"
+        print('------------ print game info ---------------')
+        for state in path:
+            agent = state.agent
+            opponent = state.opponent
+            val = state.opponent.action_value
+            pot = state.pot
+            info = state.showdown_info
+            hand = state.nn_current_hand
+            phase = state.phase
+            print "**Agent** stack:", agent.stack, "action:", agent.action, \
+            "\t|\t**Opponent** stack", opponent.stack, "action:", opponent.action,\
+            "\t|\t pot:",pot, "\t|\t phase:", phase
+            nn_level += 1
 
-    print(nn_level)
+        print(nn_level)
 
+    total_steps += steps
+print "Average steps: ", total_steps/100
