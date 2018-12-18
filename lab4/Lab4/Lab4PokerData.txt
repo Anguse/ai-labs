@@ -1,0 +1,201 @@
+0 , TwoPairs J 35 , straightflush 4 406 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+1 , flush K 320 , TwoPairs A 120 , Raise 5 Raise 10 , Raise 20 Raise 77 , Call 77 
+2 , HighCard A 230 , straight 6 357 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+3 , HighCard 4 173 , flush A 374 , Raise 5 Raise 10 , Raise 87 Call 87 , 
+4 , fullhouse T 447 , TwoPairs A 195 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 
+5 , OnePair 9 486 , TwoPairs J 220 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+6 , OnePair J 216 , straightflush T 495 , Raise 5 Raise 10 , Raise 3 Raise 6 , Fold 0 
+7 , OnePair 9 297 , straightflush A 476 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+8 , HighCard T 109 , TwoPairs K 485 , Raise 5 Raise 10 , Raise 52 AllIn 475 , 
+9 , 3ofakind T 242 , TwoPairs Q 156 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+10 , TwoPairs T 129 , fullhouse J 427 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 
+11 , HighCard K 330 , HighCard A 123 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+12 , OnePair 6 285 , OnePair 7 243 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+13 , straight 8 367 , TwoPairs T 80 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+14 , TwoPairs T 370 , TwoPairs A 360 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+15 , HighCard 2 142 , 3ofakind 4 327 , Raise 5 Raise 10 , Raise 61 Call 61 , 
+16 , TwoPairs Q 170 , 3ofakind 9 469 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+17 , OnePair A 130 , fullhouse A 269 , Raise 5 Raise 10 , Raise 53 Call 53 , 
+18 , straight 5 362 , HighCard Q 160 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+19 , flush 7 385 , TwoPairs A 111 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+20 , OnePair 2 233 , fullhouse 3 440 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+21 , OnePair 2 424 , HighCard K 216 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+22 , TwoPairs J 146 , straight 8 277 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+23 , OnePair Q 304 , OnePair 2 150 , Raise 5 Raise 10 , Raise 163 Fold 0 , 
+24 , OnePair 3 423 , TwoPairs A 410 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+25 , OnePair 4 226 , 3ofakind 5 445 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+26 , straight 5 409 , TwoPairs Q 201 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+27 , OnePair 7 206 , flush 6 478 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+28 , OnePair K 189 , TwoPairs J 280 , Raise 5 Raise 10 , Raise 155 AllIn 270 , 
+29 , TwoPairs T 306 , fullhouse K 474 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 
+30 , straightflush J 298 , TwoPairs T 89 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+31 , 3ofakind A 492 , HighCard K 250 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+32 , HighCard T 158 , flush 8 448 , Raise 5 Raise 10 , Raise 45 Call 45 , 
+33 , HighCard J 107 , 4ofakind 8 217 , Raise 5 Raise 10 , Raise 19 Call 19 , 
+34 , TwoPairs T 30 , fullhouse K 292 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+35 , TwoPairs K 194 , fullhouse K 461 , Raise 5 Raise 10 , Raise 20 Raise 40 , Raise 91 Call 91 , 
+36 , flush T 292 , OnePair 5 169 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+37 , OnePair Q 35 , straightflush 4 166 , Raise 5 Raise 10 , Raise 18 Call 18 , 
+38 , OnePair 5 233 , 3ofakind A 455 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+39 , HighCard A 312 , straightflush 2 477 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+40 , HighCard 9 30 , straight 3 451 , Raise 5 Raise 10 , Raise 7 Raise 14 , Raise 1 Raise 2 , Call 2 
+41 , HighCard 5 87 , 3ofakind 8 180 , Raise 5 Raise 10 , Raise 49 Call 49 , 
+42 , 3ofakind 5 298 , HighCard K 205 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+43 , TwoPairs T 64 , flush 3 473 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+44 , straightflush 2 258 , TwoPairs K 97 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+45 , HighCard 5 200 , 4ofakind A 484 , Raise 5 Raise 10 , Raise 118 Call 118 , 
+46 , straightflush 8 496 , OnePair 2 179 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+47 , HighCard Q 273 , flush 9 498 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+48 , straight Q 427 , TwoPairs T 198 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 
+49 , 3ofakind 9 470 , HighCard Q 125 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+50 , 4ofakind Q 274 , TwoPairs Q 183 , Raise 5 Raise 10 , Raise 20 Raise 23 , Call 23 
+51 , HighCard A 276 , fullhouse 6 469 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+52 , flush 5 435 , TwoPairs J 191 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 
+53 , TwoPairs J 49 , 4ofakind 2 324 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+54 , OnePair A 68 , 4ofakind J 311 , Raise 5 Raise 10 , Raise 5 Raise 10 , Call 10 
+55 , flush 4 367 , OnePair 2 192 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+56 , OnePair 5 438 , TwoPairs T 174 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+57 , 3ofakind A 421 , TwoPairs A 271 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+58 , fullhouse 7 381 , TwoPairs A 154 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+59 , fullhouse 7 246 , HighCard Q 148 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+60 , 4ofakind T 363 , OnePair T 241 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+61 , flush T 398 , HighCard Q 136 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+62 , OnePair 7 388 , TwoPairs T 311 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+63 , HighCard 9 52 , 4ofakind 9 166 , Raise 5 Raise 10 , Raise 32 Call 32 , 
+64 , OnePair 8 426 , OnePair 2 167 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+65 , flush 5 458 , TwoPairs T 83 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 
+66 , HighCard J 51 , HighCard A 147 , Raise 5 Raise 10 , Raise 22 Fold 0 , 
+67 , HighCard 8 59 , straightflush 2 448 , Raise 5 Raise 10 , Raise 21 Raise 42 , Fold 0 
+68 , OnePair 8 246 , fullhouse 9 487 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+69 , 3ofakind 9 436 , OnePair 5 139 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+70 , OnePair 7 471 , TwoPairs J 332 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+71 , OnePair 4 485 , OnePair 5 188 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+72 , OnePair 2 256 , 3ofakind 5 468 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+73 , fullhouse 3 352 , TwoPairs T 219 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+74 , 4ofakind 2 404 , TwoPairs J 152 , Raise 5 Raise 10 , Raise 20 Raise 68 , Call 68 
+75 , OnePair K 78 , flush 3 164 , Raise 5 Raise 10 , Raise 5 Raise 10 , Raise 46 Call 46 , 
+76 , HighCard T 195 , straight K 373 , Raise 5 Raise 10 , Raise 73 Call 73 , 
+77 , HighCard Q 288 , OnePair T 218 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+78 , HighCard J 32 , 4ofakind Q 210 , Raise 5 Raise 10 , Raise 3 Raise 6 , AllIn 24 
+79 , OnePair 6 286 , TwoPairs J 31 , Raise 5 Raise 10 , Raise 20 Raise 0 , Call 0 
+80 , OnePair Q 58 , 4ofakind 7 179 , Raise 5 Raise 10 , Raise 16 Call 16 , 
+81 , 4ofakind 2 456 , HighCard A 123 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+82 , fullhouse K 480 , TwoPairs T 184 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 
+83 , straight 2 373 , TwoPairs A 216 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+84 , OnePair 2 254 , TwoPairs Q 114 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+85 , flush 5 307 , OnePair T 133 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+86 , OnePair K 125 , straight K 274 , Raise 5 Raise 10 , Raise 46 Call 46 , 
+87 , OnePair 2 482 , TwoPairs T 222 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+88 , fullhouse 3 439 , TwoPairs Q 176 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 
+89 , TwoPairs 6 62 , fullhouse 8 167 , Raise 5 Raise 10 , Raise 10 Call 10 , 
+90 , OnePair 6 399 , OnePair 7 145 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+91 , 4ofakind A 408 , OnePair 9 215 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+92 , flush 2 452 , TwoPairs A 208 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 
+93 , 3ofakind 4 393 , OnePair Q 59 , Raise 5 Raise 19 , Raise 38 Fold 0 , 
+94 , TwoPairs T 53 , 3ofakind 6 388 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+95 , OnePair 5 129 , OnePair J 80 , Raise 5 Raise 3 , Raise 6 Raise 21 , Fold 0 
+96 , straight 7 417 , TwoPairs Q 101 , Raise 5 Raise 10 , Raise 20 AllIn 91 , 
+97 , 4ofakind J 304 , OnePair 2 185 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+98 , 4ofakind 6 285 , HighCard K 168 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+99 , flush 4 449 , OnePair 4 204 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+100 , TwoPairs Q 231 , 4ofakind 4 486 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 
+101 , OnePair 3 340 , OnePair 4 208 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+102 , OnePair 2 257 , straight A 456 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+103 , OnePair T 231 , straightflush 9 486 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+104 , OnePair A 103 , fullhouse 7 405 , Raise 5 Raise 10 , Raise 15 Raise 30 , AllIn 83 
+105 , TwoPairs K 173 , fullhouse 4 415 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+106 , OnePair 5 457 , TwoPairs T 145 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+107 , TwoPairs K 328 , TwoPairs T 347 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+108 , OnePair 4 251 , 3ofakind 2 481 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+109 , fullhouse J 459 , TwoPairs J 161 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 
+110 , flush 4 325 , OnePair 9 198 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+111 , 4ofakind 4 478 , TwoPairs A 205 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 
+112 , OnePair T 216 , flush 7 403 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+113 , straight J 356 , TwoPairs T 154 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+114 , 3ofakind 4 331 , OnePair 7 159 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+115 , OnePair 6 242 , flush 9 363 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+116 , 4ofakind 8 457 , OnePair A 122 , Raise 5 Raise 17 , Raise 34 Raise 6 , Raise 12 Raise 13 , Raise 26 AllIn 86 , 
+117 , 4ofakind 2 472 , OnePair 4 239 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+118 , OnePair Q 386 , TwoPairs Q 492 , Raise 5 Raise 10 , Raise 282 Raise 94 , Call 94 
+119 , TwoPairs K 42 , 3ofakind 6 140 , Raise 5 Raise 10 , Raise 23 Call 23 , 
+120 , TwoPairs T 50 , 4ofakind 9 396 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+121 , TwoPairs A 175 , flush 8 259 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+122 , OnePair 3 482 , OnePair 4 158 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+123 , 3ofakind Q 272 , TwoPairs A 139 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+124 , TwoPairs Q 122 , 3ofakind J 216 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+125 , OnePair Q 206 , straightflush 3 350 , Raise 5 Raise 10 , Raise 61 Call 61 , 
+126 , OnePair 2 250 , flush 6 389 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+127 , TwoPairs A 58 , straight 8 274 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+128 , straightflush K 480 , OnePair T 116 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+129 , straight 8 470 , OnePair 9 192 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+130 , HighCard T 120 , fullhouse J 332 , Raise 5 Raise 10 , Raise 32 Call 32 , 
+131 , HighCard A 354 , OnePair J 402 , Raise 5 Raise 11 , Raise 22 Call 22 , 
+132 , TwoPairs Q 240 , fullhouse 3 376 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+133 , flush 5 315 , OnePair 9 163 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+134 , OnePair 9 257 , OnePair 2 180 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+135 , TwoPairs J 105 , flush 9 385 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+136 , HighCard 3 61 , OnePair 4 173 , Raise 5 Raise 10 , Raise 7 Raise 14 , Fold 0 
+137 , straight 2 257 , OnePair 4 167 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+138 , TwoPairs A 46 , fullhouse A 336 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+139 , flush 3 477 , TwoPairs A 149 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 
+140 , TwoPairs J 121 , TwoPairs Q 275 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+141 , OnePair 6 255 , 4ofakind 5 492 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+142 , TwoPairs J 81 , straight T 431 , Raise 5 Raise 10 , Raise 20 Raise 40 , Raise 10 Raise 20 , Raise 25 Call 25 , 
+143 , OnePair 8 411 , OnePair 9 191 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+144 , TwoPairs J 192 , flush 9 328 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+145 , TwoPairs T 193 , 3ofakind 5 441 , Raise 5 Raise 10 , Raise 20 Raise 40 , Raise 122 Call 122 , 
+146 , TwoPairs K 200 , flush Q 316 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+147 , TwoPairs J 76 , HighCard Q 119 , Raise 5 Raise 10 , Raise 19 Fold 0 , 
+148 , HighCard 2 156 , 3ofakind 2 232 , Raise 5 Raise 10 , Raise 5 Raise 10 , Call 10 
+149 , straight A 491 , TwoPairs K 297 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 
+150 , HighCard K 297 , straightflush J 459 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+151 , TwoPairs K 347 , TwoPairs T 445 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+152 , OnePair 5 495 , TwoPairs Q 386 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+153 , fullhouse 8 425 , TwoPairs K 165 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+154 , straightflush 8 301 , TwoPairs K 158 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+155 , HighCard 6 36 , 3ofakind 3 219 , Raise 5 Raise 10 , Raise 7 Raise 14 , Raise 1 Raise 2 , Call 2 
+156 , TwoPairs Q 201 , flush 3 434 , Raise 5 Raise 10 , Raise 20 Raise 40 , AllIn 176 
+157 , HighCard 7 148 , straight 7 361 , Raise 5 Raise 10 , Raise 35 Call 35 , 
+158 , straight A 311 , OnePair 6 194 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+159 , OnePair T 270 , flush T 400 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+160 , OnePair 6 329 , TwoPairs K 485 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+161 , OnePair 8 300 , flush 5 495 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+162 , straightflush 6 348 , OnePair 3 119 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+163 , OnePair 5 290 , flush 7 495 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+164 , flush T 336 , OnePair 2 119 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+165 , TwoPairs K 188 , straight 3 461 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+166 , HighCard 9 163 , straight J 359 , Raise 5 Raise 10 , Raise 4 Raise 8 , Raise 85 Call 85 , 
+167 , straightflush 2 251 , TwoPairs Q 104 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+168 , HighCard 4 193 , HighCard A 117 , Raise 5 Raise 10 , Raise 102 Fold 0 , 
+169 , TwoPairs J 197 , fullhouse K 355 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+170 , 4ofakind J 412 , TwoPairs Q 76 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+171 , OnePair J 170 , straight 4 415 , Raise 5 Raise 10 , Raise 29 Call 29 , 
+172 , straight 9 218 , TwoPairs J 50 , Raise 5 Raise 10 , Raise 20 AllIn 40 , 
+173 , OnePair J 123 , TwoPairs J 381 , Raise 5 Raise 10 , Raise 80 Raise 91 , Fold 0 
+174 , straightflush 7 443 , OnePair 3 186 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+175 , 3ofakind 9 440 , TwoPairs A 250 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 
+176 , 4ofakind A 272 , HighCard K 157 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+177 , 4ofakind 2 455 , OnePair 7 174 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+178 , OnePair Q 263 , straight 5 389 , Raise 5 Raise 10 , Raise 149 Call 149 , 
+179 , HighCard 2 119 , fullhouse 4 485 , Raise 5 Raise 10 , Raise 59 Call 59 , 
+180 , TwoPairs T 260 , straightflush 9 441 , Raise 5 Raise 10 , Raise 20 Raise 40 , AllIn 235 
+181 , OnePair T 427 , OnePair 2 112 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+182 , HighCard A 304 , HighCard A 111 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+183 , OnePair Q 431 , OnePair J 73 , Raise 5 Raise 57 , Raise 332 Fold 0 , 
+184 , HighCard 2 91 , fullhouse J 492 , Raise 5 Raise 10 , Raise 8 Raise 16 , Raise 4 Raise 8 , Call 8 
+185 , straightflush 7 414 , TwoPairs A 194 , Raise 5 Raise 10 , Raise 20 AllIn 184 , 
+186 , HighCard J 126 , HighCard Q 221 , Raise 5 Raise 10 , Raise 42 Fold 0 , 
+187 , straight 8 416 , TwoPairs A 81 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+188 , HighCard 7 136 , flush 8 438 , Raise 5 Raise 10 , Raise 93 Call 93 , 
+189 , flush 9 391 , OnePair 7 139 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+190 , TwoPairs K 73 , flush Q 308 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+191 , HighCard Q 245 , 4ofakind Q 434 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+192 , 3ofakind 9 483 , OnePair 6 165 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+193 , fullhouse 3 430 , TwoPairs J 214 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 
+194 , TwoPairs K 169 , straight 4 490 , Raise 5 Raise 10 , Raise 20 Raise 40 , AllIn 144 
+195 , OnePair 7 227 , 4ofakind T 343 , Raise 5 Raise 10 , Raise 20 Call 20 , 
+196 , HighCard A 243 , 4ofakind K 474 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 
+197 , HighCard A 455 , OnePair 8 150 , Raise 5 Raise 10 , Raise 20 Fold 0 , 
+198 , HighCard 4 104 , straight K 466 , Raise 5 Raise 10 , Raise 20 Raise 40 , AllIn 79 
+199 , HighCard T 191 , OnePair 6 228 , Raise 5 Raise 10 , Raise 111 Fold 0 , 
+
