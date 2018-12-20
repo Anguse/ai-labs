@@ -1,15 +1,24 @@
+import math
+
 import numpy as np
+import warnings
 from sklearn.model_selection import train_test_split, KFold
-from sklearn import svm
+from sklearn.model_selection import cross_val_score
+from sklearn import svm, ensemble
 from sklearn import neighbors as nb
 from sklearn import naive_bayes as nab
 
 # import data
 
-# Data specifics:
-#   RANKS: 0 = highcard, 1 = onepair, 2 = twopair, 3 = 3ofakind, 4 = straight, 5 = flush, 6 = fullhouse, 7 = 4ofakind, 8 = straightflush
-#   ACTION: fold = 0, call = 1, raise = 2, allin = 3
+#********************
+#***Data specifics***
+#********************
+#   RANKS: 0 = highcard, 1 = onepair, 2 = twopair, 3 = 3ofakind, 4 = straight,
+#          5 = flush, 6 = fullhouse, 7 = 4ofakind, 8 = straightflush
+#   ACTION: fold = 0, call = 1, raise = 2, allin = 3PredictedOutcome = svc.predict(Input_test)
 #   OTHER: no data = -1
+
+warnings.filterwarnings("ignore")
 
 Data = np.loadtxt(open("Lab4PokerData_numbersonly2.csv", "rb"), delimiter=";", skiprows=1)
 print ('*******************************************')
@@ -59,20 +68,54 @@ print('Accuracy of Prediction in Percent with naive bayes: ', "p1: ", (Correct_P
 print ('*******************************************\n')
 
 print ('*******************************************')
-print('Number of Correct Predictions with naive bayes:', "p1: ", Correct_Predictions_p1_knn, "p2: ", Correct_Predictions_p2_knn, 'Out_of:', len(PredictedOutcome_p1_knn),
-      'Number of Test Data')
-print('Accuracy of Prediction in Percent with naive bayes: ', "p1: ", (Correct_Predictions_p1_knn/float(len(PredictedOutcome_p1_knn)))*100, "p2: ", (Correct_Predictions_p2_knn/float(len(PredictedOutcome_p2_knn)))*100)
-print ('*******************************************\n')
-
-print ('*******************************************')
 print('Number of Correct Predictions with naive bayes:', "p1: ", Correct_Predictions_p1_svc, "p2: ", Correct_Predictions_p2_svc, 'Out_of:', len(PredictedOutcome_p1_svc),
       'Number of Test Data')
 print('Accuracy of Prediction in Percent with naive bayes: ', "p1: ", (Correct_Predictions_p1_svc/float(len(PredictedOutcome_p1_svc)))*100, "p2: ", (Correct_Predictions_p2_svc/float(len(PredictedOutcome_p2_svc)))*100)
 print ('*******************************************\n')
 
-fold = KFold(n_splits=10)
-fold.get_n_splits(Input_train)
-for train_index, test_index in fold.split(Input_train):
-    print("TRAIN:", train_index, "TEST:", test_index)
-    X_train, X_test = Input_train[train_index], Input_train[test_index]
-    y_train, y_test = Input_test[train_index], Input_test[test_index]
+
+best_score = best_metric = best_k = 0.0
+
+for k in range(1, 6):
+    for metric in nb.VALID_METRICS.get('kd_tree'):
+        p1_knn = nb.KNeighborsClassifier(k, weights='distance', metric=metric).fit(Input_train, Targetp1_train)
+        p2_knn = nb.KNeighborsClassifier(k, weights='distance', metric=metric).fit(Input_train, Targetp2_train)
+
+        PredictedOutcome_p1_knn = p1_knn.predict(Input_test)
+        PredictedOutcome_p2_knn = p2_knn.predict(Input_test)
+
+        Correct_Predictions_p1_knn = len([i for i, j in zip(PredictedOutcome_p1_knn, Targetp1_test) if i == j])
+        Correct_Predictions_p2_knn = len([i for i, j in zip(PredictedOutcome_p2_knn, Targetp2_test) if i == j])
+
+        print ('*******************************************')
+        print ('Classifier:', p1_knn)
+        print('Number of Correct Predictions', Correct_Predictions_p1_knn, 'Out_of:', len(PredictedOutcome_p1_knn),
+              'Number of Test Data')
+        print('Accuracy of Prediction in Percent', (Correct_Predictions_p1_knn / float(len(PredictedOutcome_p1_knn))) * 100)
+        print ('*******************************************\n')
+        validation_p1 = cross_val_score(p1_knn, Input_train, Targetp1_test, cv=10)
+        validation_p1_avg = sum(validation_p1) / float(len(validation_p1))
+        print 'cross validation score = ', validation_p1_avg
+        if best_score < validation_p1_avg:
+            best_score = validation_p1_avg
+            best_metric = metric
+            best_k = k
+
+        print ('*******************************************')
+        print ('Classifier:', p2_knn)
+        print('Number of Correct Predictions', Correct_Predictions_p2_knn, 'Out_of:', len(PredictedOutcome_p2_knn),
+              'Number of Test Data')
+        print(
+        'Accuracy of Prediction in Percent', (Correct_Predictions_p2_knn / float(len(PredictedOutcome_p2_knn))) * 100)
+        print ('*******************************************\n')
+        validation_p2 = cross_val_score(p2_knn, Input_train, Targetp2_test, cv=10)
+        validation_p2_avg = sum(validation_p2) / float(len(validation_p2))
+        print 'cross validation score = ', validation_p2_avg
+        if best_score < validation_p2_avg:
+            best_score = validation_p2_avg
+            best_metric = metric
+            best_k = k
+
+print '\n##############################################'
+print '##############################################\n'
+print 'Best score', best_score, 'with k = ', best_k, '& metric = ', best_metric
