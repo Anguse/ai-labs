@@ -20,7 +20,7 @@ from sklearn import naive_bayes as nab
 
 warnings.filterwarnings("ignore")
 
-Data = np.loadtxt(open("Lab4PokerData_numbersonly2.csv", "rb"), delimiter=";", skiprows=1)
+Data = np.loadtxt(open("Lab4PokerData.csv", "rb"), delimiter=";", skiprows=1)
 print ('*******************************************')
 print('Length of Total Data:', len(Data))
 
