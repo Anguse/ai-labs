@@ -37,45 +37,32 @@ print ('*******************************************')
 print('Length of Train Data:', len(Train_set))
 print('Length of Test Data', len(Test_set))
 
-p1_naive = nab.GaussianNB().fit(Input_train, Targetp1_train)
-p2_naive = nab.GaussianNB().fit(Input_train, Targetp2_train)
-p1_knn = nb.KNeighborsClassifier(3).fit(Input_train, Targetp1_train)
-p2_knn = nb.KNeighborsClassifier(3).fit(Input_train, Targetp2_train)
-p1_svc = svm.SVC(kernel='linear', C=1.0).fit(Input_train, Targetp1_train)
-p2_svc = svm.SVC(kernel='linear', C=1.0).fit(Input_train, Targetp2_train)
+classificators = []
+classificators.append(nab.GaussianNB().fit(Input_train, Targetp1_train))
+classificators.append(nab.GaussianNB().fit(Input_train, Targetp2_train))
+classificators.append(nb.KNeighborsClassifier(3).fit(Input_train, Targetp1_train))
+classificators.append(nb.KNeighborsClassifier(3).fit(Input_train, Targetp2_train))
+classificators.append(svm.SVC(kernel='linear', C=1.0).fit(Input_train, Targetp1_train))
+classificators.append(svm.SVC(kernel='linear', C=1.0).fit(Input_train, Targetp2_train))
 
-print ('*******************************************\n')
-print(p1_knn)
+i = 1
+for classificator in classificators:
+    predicted_outcome = classificator.predict(Input_test)
+    if i % 2 != 0:
+        correct_predictions = len([i for i, j in zip(predicted_outcome, Targetp2_test) if i == j])
+        validation = cross_val_score(classificator, Input_train, Targetp2_test, cv=10)
+    else:
+        correct_predictions = len([i for i, j in zip(predicted_outcome, Targetp1_test) if i == j])
+        validation = cross_val_score(classificator, Input_train, Targetp1_test, cv=10)
+    validation_avg = sum(validation)/float(len(validation))
+    print ('*******************************************\n')
+    print classificator
+    print '\n'
+    print 'Score: ', validation_avg
+    i += 1
 
-PredictedOutcome_p1_naive = p1_naive.predict(Input_test)
-PredictedOutcome_p2_naive = p2_naive.predict(Input_test)
-PredictedOutcome_p1_knn = p1_knn.predict(Input_test)
-PredictedOutcome_p2_knn = p2_knn.predict(Input_test)
-PredictedOutcome_p1_svc = p1_svc.predict(Input_test)
-PredictedOutcome_p2_svc = p2_svc.predict(Input_test)
-
-Correct_Predictions_p1_naive = len([i for i, j in zip(PredictedOutcome_p1_naive, Targetp1_test) if i == j])
-Correct_Predictions_p2_naive = len([i for i, j in zip(PredictedOutcome_p2_naive, Targetp2_test) if i == j])
-Correct_Predictions_p1_knn = len([i for i, j in zip(PredictedOutcome_p1_knn, Targetp1_test) if i == j])
-Correct_Predictions_p2_knn = len([i for i, j in zip(PredictedOutcome_p2_knn, Targetp2_test) if i == j])
-Correct_Predictions_p1_svc = len([i for i, j in zip(PredictedOutcome_p1_svc, Targetp1_test) if i == j])
-Correct_Predictions_p2_svc = len([i for i, j in zip(PredictedOutcome_p2_svc, Targetp2_test) if i == j])
-
-print ('*******************************************')
-print('Number of Correct Predictions with naive bayes:', "p1: ", Correct_Predictions_p1_naive, "p2: ", Correct_Predictions_p2_naive, 'Out_of:', len(PredictedOutcome_p1_naive),
-      'Number of Test Data')
-print('Accuracy of Prediction in Percent with naive bayes: ', "p1: ", (Correct_Predictions_p1_naive/float(len(PredictedOutcome_p1_naive)))*100, "p2: ", (Correct_Predictions_p2_naive/float(len(PredictedOutcome_p2_naive)))*100)
-print ('*******************************************\n')
-
-print ('*******************************************')
-print('Number of Correct Predictions with naive bayes:', "p1: ", Correct_Predictions_p1_svc, "p2: ", Correct_Predictions_p2_svc, 'Out_of:', len(PredictedOutcome_p1_svc),
-      'Number of Test Data')
-print('Accuracy of Prediction in Percent with naive bayes: ', "p1: ", (Correct_Predictions_p1_svc/float(len(PredictedOutcome_p1_svc)))*100, "p2: ", (Correct_Predictions_p2_svc/float(len(PredictedOutcome_p2_svc)))*100)
-print ('*******************************************\n')
-
-
+# Cross validation on knn with different parameters
 best_score = best_metric = best_k = 0.0
-
 for k in range(1, 6):
     for metric in nb.VALID_METRICS.get('kd_tree'):
         p1_knn = nb.KNeighborsClassifier(k, weights='distance', metric=metric).fit(Input_train, Targetp1_train)
@@ -87,30 +74,27 @@ for k in range(1, 6):
         Correct_Predictions_p1_knn = len([i for i, j in zip(PredictedOutcome_p1_knn, Targetp1_test) if i == j])
         Correct_Predictions_p2_knn = len([i for i, j in zip(PredictedOutcome_p2_knn, Targetp2_test) if i == j])
 
-        print ('*******************************************')
-        print ('Classifier:', p1_knn)
-        print('Number of Correct Predictions', Correct_Predictions_p1_knn, 'Out_of:', len(PredictedOutcome_p1_knn),
-              'Number of Test Data')
-        print('Accuracy of Prediction in Percent', (Correct_Predictions_p1_knn / float(len(PredictedOutcome_p1_knn))) * 100)
-        print ('*******************************************\n')
         validation_p1 = cross_val_score(p1_knn, Input_train, Targetp1_test, cv=10)
         validation_p1_avg = sum(validation_p1) / float(len(validation_p1))
-        print 'cross validation score = ', validation_p1_avg
+        validation_p2 = cross_val_score(p2_knn, Input_train, Targetp2_test, cv=10)
+        validation_p2_avg = sum(validation_p2) / float(len(validation_p2))
+
+        print '*********************************************'
+        print p1_knn
+        print '\n'
+        print 'Score: ', validation_p1_avg
+        print '\n'
+
+        print '*********************************************'
+        print p2_knn
+        print '\n'
+        print 'Score: ', validation_p2_avg
+        print '\n'
+
         if best_score < validation_p1_avg:
             best_score = validation_p1_avg
             best_metric = metric
             best_k = k
-
-        print ('*******************************************')
-        print ('Classifier:', p2_knn)
-        print('Number of Correct Predictions', Correct_Predictions_p2_knn, 'Out_of:', len(PredictedOutcome_p2_knn),
-              'Number of Test Data')
-        print(
-        'Accuracy of Prediction in Percent', (Correct_Predictions_p2_knn / float(len(PredictedOutcome_p2_knn))) * 100)
-        print ('*******************************************\n')
-        validation_p2 = cross_val_score(p2_knn, Input_train, Targetp2_test, cv=10)
-        validation_p2_avg = sum(validation_p2) / float(len(validation_p2))
-        print 'cross validation score = ', validation_p2_avg
         if best_score < validation_p2_avg:
             best_score = validation_p2_avg
             best_metric = metric
