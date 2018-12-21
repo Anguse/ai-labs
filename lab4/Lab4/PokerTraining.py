@@ -45,10 +45,10 @@ classificators.append(nb.KNeighborsClassifier(3).fit(Input_train, Targetp2_train
 classificators.append(svm.SVC(kernel='linear', C=1.0).fit(Input_train, Targetp1_train))
 classificators.append(svm.SVC(kernel='linear', C=1.0).fit(Input_train, Targetp2_train))
 
-i = 1
+index = 0
 for classificator in classificators:
     predicted_outcome = classificator.predict(Input_test)
-    if i % 2 != 0:
+    if index % 2 != 0:
         correct_predictions = len([i for i, j in zip(predicted_outcome, Targetp2_test) if i == j])
         validation = cross_val_score(classificator, Input_train, Targetp2_test, cv=10)
     else:
@@ -59,7 +59,7 @@ for classificator in classificators:
     print classificator
     print '\n'
     print 'Score: ', validation_avg
-    i += 1
+    index += 1
 
 # Cross validation on knn with different parameters
 best_score = best_metric = best_k = 0.0
