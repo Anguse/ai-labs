@@ -1,0 +1,345 @@
+__author__ = 'fyt'
+
+import socket
+import random
+import ClientBase
+
+# IP address and port
+TCP_IP = '127.0.0.1'
+TCP_PORT = 5000
+BUFFER_SIZE = 1024
+
+# Agent
+POKER_CLIENT_NAME = 'James'
+CURRENT_HAND = []
+DRAWS = 0
+CHIPS = 200
+CURRENT_BET = 0
+ACTIONS = []
+
+# Opponent (TODO Create class for player and list with all players)
+OPPONENT_DRAWS = 0          # The amount of cards redrawn this round
+OPPONENT_CHIPS = 0          # The amount of chips the player has
+OPPONENT_CURRENT_BET = 0    # The total bet this round
+OPPONENT_ACTIONS = []       # The opponents actions of this round
+
+#Game
+GAME_ANTE = 0
+ROUND = 0
+BETTING_PHASE = 0
+
+
+class pokerGames(object):
+    def __init__(self):
+        self.PlayerName = POKER_CLIENT_NAME
+        self.Chips = 0
+        self.CurrentHand = []
+        self.Ante = 0
+        self.playersCurrentBet = 0
+        self.opponentDraws = []
+
+'''
+* Gets the name of the player.
+* @return  The name of the player as a single word without space. <code>null</code> is not a valid answer.
+'''
+def queryPlayerName(_name):
+    if _name is None:
+        _name = POKER_CLIENT_NAME
+    return _name
+
+'''
+* Modify queryOpenAction() and add your strategy here
+* Called during the betting phases of the game when the player needs to decide what open
+* action to choose.
+* @param minimumPotAfterOpen   the total minimum amount of chips to put into the pot if the answer action is
+*                              {@link BettingAnswer#ACTION_OPEN}.
+* @param playersCurrentBet     the amount of chips the player has already put into the pot (dure to the forced bet).
+* @param playersRemainingChips the number of chips the player has not yet put into the pot.
+* @return                      An answer to the open query. The answer action must be one of
+*                              {@link BettingAnswer#ACTION_OPEN}, {@link BettingAnswer#ACTION_ALLIN} or
+*                              {@link BettingAnswer#ACTION_CHECK }. If the action is open, the answers
+*                              amount of chips in the answer must be between <code>minimumPotAfterOpen</code>
+*                              and the players total amount of chips (the amount of chips alrady put into
+*                              pot plus the remaining amount of chips).
+'''
+def queryOpenAction(_minimumPotAfterOpen, _playersCurrentBet, _playersRemainingChips):
+    print("Player requested to choose an opening action.")
+
+    # Random Open Action
+    def chooseOpenOrCheck():
+        if _playersCurrentBet + _playersRemainingChips > _minimumPotAfterOpen:
+            #return ClientBase.BettingAnswer.ACTION_OPEN,  iOpenBet
+            return ClientBase.BettingAnswer.ACTION_OPEN, (random.randint(0, 10) + _minimumPotAfterOpen) if _playersCurrentBet + _playersRemainingChips + 10 > _minimumPotAfterOpen else _minimumPotAfterOpen
+        else:
+            return ClientBase.BettingAnswer.ACTION_CHECK
+
+    return {
+        0: ClientBase.BettingAnswer.ACTION_CHECK,
+        1: ClientBase.BettingAnswer.ACTION_ALLIN,
+    }.get(random.randint(0, 2), chooseOpenOrCheck())
+
+'''
+* Modify queryCallRaiseAction() and add your strategy here
+* Called during the betting phases of the game when the player needs to decide what call/raise
+* action to choose.
+* @param maximumBet                the maximum number of chips one player has already put into the pot.
+* @param minimumAmountToRaiseTo    the minimum amount of chips to bet if the returned answer is {@link BettingAnswer#ACTION_RAISE}.
+* @param playersCurrentBet         the number of chips the player has already put into the pot.
+* @param playersRemainingChips     the number of chips the player has not yet put into the pot.
+* @return                          An answer to the call or raise query. The answer action must be one of
+*                                  {@link BettingAnswer#ACTION_FOLD}, {@link BettingAnswer#ACTION_CALL},
+*                                  {@link BettingAnswer#ACTION_RAISE} or {@link BettingAnswer#ACTION_ALLIN }.
+*                                  If the players number of remaining chips is less than the maximum bet and
+*                                  the players current bet, the call action is not available. If the players
+*                                  number of remaining chips plus the players current bet is less than the minimum
+*                                  amount of chips to raise to, the raise action is not available. If the action
+*                                  is raise, the answers amount of chips is the total amount of chips the player
+*                                  puts into the pot and must be between <code>minimumAmountToRaiseTo</code> and
+*                                  <code>playersCurrentBet+playersRemainingChips</code>.
+'''
+def queryCallRaiseAction(_maximumBet, _minimumAmountToRaiseTo, _playersCurrentBet, _playersRemainingChips):
+    print("Player requested to choose a call/raise action.")
+    # Random Open Action
+    def chooseRaiseOrFold():
+        if  _playersCurrentBet + _playersRemainingChips > _minimumAmountToRaiseTo:
+            return ClientBase.BettingAnswer.ACTION_RAISE,  (random.randint(0, 10) + _minimumAmountToRaiseTo) if _playersCurrentBet+ _playersRemainingChips + 10 > _minimumAmountToRaiseTo else _minimumAmountToRaiseTo
+        else:
+            return ClientBase.BettingAnswer.ACTION_FOLD
+    return {
+        0: ClientBase.BettingAnswer.ACTION_FOLD,
+        1: ClientBase.BettingAnswer.ACTION_ALLIN,
+        2: ClientBase.BettingAnswer.ACTION_CALL if _playersCurrentBet + _playersRemainingChips > _maximumBet else ClientBase.BettingAnswer.ACTION_FOLD
+    }.get(random.randint(0, 3), chooseRaiseOrFold())
+
+'''
+* Modify queryCardsToThrow() and add your strategy to throw cards
+* Called during the draw phase of the game when the player is offered to throw away some
+* (possibly all) of the cards on hand in exchange for new.
+* @return  An array of the cards on hand that should be thrown away in exchange for new,
+*          or <code>null</code> or an empty array to keep all cards.
+* @see     #infoCardsInHand(ca.ualberta.cs.poker.Hand)
+'''
+def queryCardsToThrow(_hand):
+    global BETTING_PHASE
+    BETTING_PHASE += 1
+    print("Requested information about what cards to throw")
+    print(_hand)
+    return _hand[random.randint(0, 4)] + ' '
+
+# InfoFunction:
+
+'''
+* Called when a new round begins.
+* @param round the round number (increased for each new round).
+'''
+def infoNewRound(_round):
+    global OPPONENT_CURRENT_BET, OPPONENT_ACTIONS, OPPONENT_DRAWS, CURRENT_BET, ACTIONS, DRAWS, ROUND, BETTING_PHASE
+    ROUND = _round
+    OPPONENT_CURRENT_BET = 0
+    CURRENT_BET = 0
+    OPPONENT_DRAWS = 0
+    DRAWS = 0
+    BETTING_PHASE = 0
+    del OPPONENT_ACTIONS[:]
+    del ACTIONS[:]
+    print('Starting Round: ' + _round )
+
+'''
+* Called when the poker server informs that the game is completed.
+'''
+def infoGameOver():
+    print('The game is over.')
+
+'''
+* Called when the server informs the players how many chips a player has.
+* @param playerName    the name of a player.
+* @param chips         the amount of chips the player has.
+'''
+def infoPlayerChips(_playerName, _chips):
+    global OPPONENT_CHIPS, CHIPS
+    if _playerName != POKER_CLIENT_NAME:
+        OPPONENT_CHIPS = int(_chips)
+        CHIPS = 400 - int(_chips) # TODO solve for more players
+    else:
+        CHIPS = int(_chips)
+        OPPONENT_CHIPS = 400 - int(_chips)
+    print('The player ' + _playerName + ' has ' + _chips + 'chips')
+    print(POKER_CLIENT_NAME, "has", CHIPS, "chips")
+
+'''
+* Called when the ante has changed.
+* @param ante  the new value of the ante.
+'''
+def infoAnteChanged(_ante):
+    global GAME_ANTE
+    GAME_ANTE = _ante
+    print('The ante is: ' + _ante)
+
+'''
+* Called when a player had to do a forced bet (putting the ante in the pot).
+* @param playerName    the name of the player forced to do the bet.
+* @param forcedBet     the number of chips forced to bet.
+'''
+def infoForcedBet(_playerName, _forcedBet):
+    global OPPONENT_CURRENT_BET, OPPONENT_CHIPS, CURRENT_BET, CHIPS
+    OPPONENT_CHIPS -= int(_forcedBet)
+    OPPONENT_CURRENT_BET += int(_forcedBet)
+    CHIPS -= int(_forcedBet)
+    CURRENT_BET += int(_forcedBet)
+    print("Player "+ _playerName +" made a forced bet of "+ _forcedBet + " chips.")
+    print POKER_CLIENT_NAME, "forced: ", CURRENT_BET
+    print "RANDOM forced: ", OPPONENT_CURRENT_BET
+
+'''
+* Called when a player opens a betting round.
+* @param playerName        the name of the player that opens.
+* @param openBet           the amount of chips the player has put into the pot.
+'''
+def infoPlayerOpen(_playerName, _openBet):
+    global OPPONENT_CURRENT_BET, OPPONENT_CHIPS, OPPONENT_ACTIONS, CURRENT_BET, CHIPS, ACTIONS
+    if _playerName != POKER_CLIENT_NAME:
+        OPPONENT_CHIPS += OPPONENT_CURRENT_BET
+        OPPONENT_CHIPS -= int(_openBet)
+        OPPONENT_CURRENT_BET = int(_openBet)
+        OPPONENT_ACTIONS.append((ClientBase.BettingAnswer.ACTION_OPEN, _openBet))
+    else:
+        CHIPS += CURRENT_BET
+        CHIPS -= int(_openBet)
+        CURRENT_BET = int(_openBet)
+        ACTIONS.append((ClientBase.BettingAnswer.ACTION_OPEN, _openBet))
+    print("Player "+ _playerName + " opened, has put "+ _openBet + " chips into the pot.")
+
+'''
+* Called when a player checks.
+* @param playerName        the name of the player that checks.
+'''
+def infoPlayerCheck(_playerName):
+    global OPPONENT_ACTIONS, ACTIONS
+    if _playerName != POKER_CLIENT_NAME:
+        OPPONENT_ACTIONS.append(ClientBase.BettingAnswer.ACTION_CHECK)
+    else:
+        ACTIONS.append(ClientBase.BettingAnswer.ACTION_CHECK)
+    print("Player "+ _playerName +" checked.")
+
+'''
+* Called when a player raises.
+* @param playerName        the name of the player that raises.
+* @param amountRaisedTo    the amount of chips the player raised to.
+'''
+def infoPlayerRise(_playerName, _amountRaisedTo):
+    global OPPONENT_CURRENT_BET, OPPONENT_CHIPS, OPPONENT_ACTIONS, CURRENT_BET, CHIPS, ACTIONS
+    if _playerName != POKER_CLIENT_NAME:
+        OPPONENT_CHIPS += OPPONENT_CURRENT_BET
+        OPPONENT_CHIPS -= int(_amountRaisedTo)
+        OPPONENT_CURRENT_BET = int(_amountRaisedTo)
+        OPPONENT_ACTIONS.append((ClientBase.BettingAnswer.ACTION_RAISE, _amountRaisedTo))
+    else:
+        CHIPS += CURRENT_BET
+        CHIPS -= int(_amountRaisedTo)
+        CURRENT_BET = int(_amountRaisedTo)
+        ACTIONS.append((ClientBase.BettingAnswer.ACTION_RAISE, _amountRaisedTo))
+    print("Player "+_playerName +" raised to "+ _amountRaisedTo+ " chips.")
+
+'''
+* Called when a player calls.
+* @param playerName        the name of the player that calls.
+'''
+def infoPlayerCall(_playerName):
+    global OPPONENT_ACTIONS, OPPONENT_CHIPS, OPPONENT_CURRENT_BET, CHIPS, ACTIONS, CURRENT_BET
+    if _playerName != POKER_CLIENT_NAME:
+        OPPONENT_CHIPS += OPPONENT_CURRENT_BET
+        OPPONENT_CHIPS -= CURRENT_BET
+        OPPONENT_CURRENT_BET = CURRENT_BET
+        OPPONENT_ACTIONS.append(ClientBase.BettingAnswer.ACTION_CALL)
+        print("Player " + _playerName + " called with", OPPONENT_CURRENT_BET, "chips and balance: ", OPPONENT_CHIPS)
+    else:
+        CHIPS += CURRENT_BET
+        CHIPS -= OPPONENT_CURRENT_BET
+        CURRENT_BET = OPPONENT_CURRENT_BET
+        ACTIONS.append(ClientBase.BettingAnswer.ACTION_CALL)
+        print("Player " + _playerName + " called with", CURRENT_BET, "chips and balance: ", CHIPS)
+
+
+'''
+* Called when a player folds.
+* @param playerName        the name of the player that folds.
+'''
+def infoPlayerFold(_playerName):
+    global OPPONENT_ACTIONS, ACTIONS
+    if _playerName != POKER_CLIENT_NAME:
+        OPPONENT_ACTIONS.append(ClientBase.BettingAnswer.ACTION_FOLD)
+    else:
+        ACTIONS.append(ClientBase.BettingAnswer.ACTION_FOLD)
+    print("Player "+ _playerName +" folded.")
+
+'''
+* Called when a player goes all-in.
+* @param playerName        the name of the player that goes all-in.
+* @param allInChipCount    the amount of chips the player has in the pot and goes all-in with.
+'''
+def infoPlayerAllIn(_playerName, _allInChipCount):
+    global OPPONENT_CURRENT_BET, OPPONENT_CHIPS, OPPONENT_ACTIONS, CURRENT_BET, CHIPS, ACTIONS
+    print("Player " + _playerName + " goes all-in with a pot of " + _allInChipCount + " chips.")
+    if _playerName != POKER_CLIENT_NAME:
+        OPPONENT_CHIPS = 0
+        OPPONENT_CURRENT_BET = int(_allInChipCount)
+        OPPONENT_ACTIONS.append((ClientBase.BettingAnswer.ACTION_ALLIN, _allInChipCount))
+        print "Balance after all in: ", OPPONENT_CHIPS
+    else:
+        CHIPS = 0
+        CURRENT_BET = int(_allInChipCount)
+        ACTIONS.append((ClientBase.BettingAnswer.ACTION_ALLIN, _allInChipCount))
+        print "Balance after all in: ", CHIPS
+
+'''
+* Called when a player has exchanged (thrown away and drawn new) cards.
+* @param playerName        the name of the player that has exchanged cards.
+* @param cardCount         the number of cards exchanged.
+'''
+def infoPlayerDraw(_playerName, _cardCount):
+    global OPPONENT_DRAWS, DRAWS
+    if _playerName != POKER_CLIENT_NAME:
+        OPPONENT_DRAWS = _cardCount
+    else:
+        DRAWS = _cardCount
+    print("Player "+ _playerName + " exchanged "+ _cardCount +" cards.")
+
+'''
+* Called during the showdown when a player shows his hand.
+* @param playerName        the name of the player whose hand is shown.
+* @param hand              the players hand.
+'''
+def infoPlayerHand(_playerName, _hand):
+    print("Player "+ _playerName +" hand " + str(_hand))
+
+'''
+* Called during the showdown when a players undisputed win is reported.
+* @param playerName    the name of the player whose undisputed win is anounced.
+* @param winAmount     the amount of chips the player won.
+'''
+def infoRoundUndisputedWin(_playerName, _winAmount):
+    global OPPONENT_CURRENT_BET, OPPONENT_ACTIONS, OPPONENT_CHIPS, OPPONENT_DRAWS, CURRENT_BET, ACTIONS, CHIPS, DRAWS
+    print("Player "+ _playerName +" won "+ _winAmount +" chips undisputed.")
+    if _playerName != POKER_CLIENT_NAME:
+        OPPONENT_CHIPS += int(_winAmount)
+        print "DRAWS: ", OPPONENT_DRAWS, "| CHIPS: ", OPPONENT_CHIPS, "| CURRENT_BET: ", OPPONENT_CURRENT_BET, "| ACTIONS: ", OPPONENT_ACTIONS
+    else:
+        CHIPS += int(_winAmount)
+        print "DRAWS: ", DRAWS, "| CHIPS: ", CHIPS, "| CURRENT_BET: ", CURRENT_BET, "| ACTIONS: ", ACTIONS
+
+
+'''
+* Called during the showdown when a players win is reported. If a player does not win anything,
+* this method is not called.
+* @param playerName    the name of the player whose win is anounced.
+* @param winAmount     the amount of chips the player won.
+'''
+def infoRoundResult(_playerName, _winAmount):
+    global OPPONENT_CURRENT_BET, OPPONENT_CHIPS, OPPONENT_ACTIONS, OPPONENT_DRAWS, CURRENT_BET, CHIPS, ACTIONS, DRAWS
+    print("Player "+ _playerName +" won " + _winAmount + " chips.")
+    if _playerName != POKER_CLIENT_NAME:
+        OPPONENT_CHIPS += int(_winAmount)
+        print "DRAWS: ", OPPONENT_DRAWS, "| CHIPS: ", OPPONENT_CHIPS, "| CURRENT_BET: ", OPPONENT_CURRENT_BET, "| ACTIONS: ", OPPONENT_ACTIONS
+    else:
+        CHIPS += int(_winAmount)
+        print "DRAWS: ", DRAWS, "| CHIPS: ", CHIPS, "| CURRENT_BET: ", CURRENT_BET, "| ACTIONS: ", ACTIONS
