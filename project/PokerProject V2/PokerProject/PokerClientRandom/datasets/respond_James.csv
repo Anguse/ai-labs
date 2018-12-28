@@ -1,0 +1,5 @@
+,Action_Performed,Action_Performed_Bet,Chips,Current_Bet,Draws,Five_Card_Rank_Percentage,Hand_Class,Hand_Rank,Last_Action,Last_Action_Bet
+0,Fold,0,190,10,0,0.8604931653712141,High Card,6421,Check,0
+0,Fold,0,180,10,0,0.7763334226748861,Pair,5793,,0
+0,Fold,0,170,10,0,0.6799785580273385,Pair,5074,,0
+0,Call,144,160,10,0,0.4509514875368534,Pair,3365,,0

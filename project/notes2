@@ -1,0 +1,12 @@
+Obtain a maximum limit of chips we are ok with playing based on the rank of our hand
+
+Mark players as hustlers if they are spotted making a high bet without actually having any good hand
+
+Mark players as limpers if they only bet high on good hands
+
+Main objective is to try and reach three of a kind
+In most cases we should avoid drawing to flushes and straights.
+
+
+
+

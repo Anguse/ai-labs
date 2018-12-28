@@ -3,6 +3,9 @@ __author__ = 'fyt'
 import socket
 import random
 import ClientBase
+import os.path
+import pandas as pd
+from deuces import Evaluator, Card
 
 # IP address and port
 TCP_IP = '127.0.0.1'
@@ -12,6 +15,8 @@ BUFFER_SIZE = 1024
 # Agent
 POKER_CLIENT_NAME = 'James'
 AGENT = object
+MINIMUM_HAND_SCORE_FOR_BET = 10
+MINIMUM_HAND_SCORE_FOR_ALL_IN = 20
 
 # Opponents
 OPPONENTS = {}
@@ -44,7 +49,12 @@ class Player(object):
         self.draws = 0          # The amount of cards the player has exchanged in the current round
         self.current_bet = 0    # The amount of chips the player has put in the pot during this round
         self.actions = []       # The actions taken by the player during this round
-        self.hand = ''          # The cards on the players hand, will mainly be used for the agent
+        self.hand = []          # The cards on the players hand, will mainly be used for the agent
+        self.hand_rank = 0
+        self.hand_class = ''
+        self.hand_fcrp = 0.0
+        self.last_action = ''
+        self.last_action_bet = 0
 
     def __str__(self):
         return '\n---------\nname = ' + str(self.name) + '\nchips = ' + str(self.chips) + '\ndraws = ' + str(self.draws) +\
@@ -58,6 +68,12 @@ class Player(object):
 
     def appendAction(self, _action):
         self.actions.append(_action)
+        if len(_action) > 2:
+            self.last_action = _action
+            self.last_action_bet = 0
+        else:
+            self.last_action = _action[0]
+            self.last_action_bet = int(_action[1])
 
     def updateBet(self, _bet):
         self.chips += self.current_bet
@@ -76,13 +92,89 @@ class Player(object):
         self.chips += _winamount
 
     def reset(self):
+
         self.draws = 0
         self.current_bet = 0
+        self.hand = []
+        self.hand_rank = 0
+        self.hand_class = ''
+        self.hand_fcrp = 0.0
+        self.last_action = ''
+        self.last_action_bet = 0
         self.actions = []
 
     def setHand(self, _hand):
-        self.hand = _hand
+        self.hand = []
+        for card in _hand:
+            self.hand.append(Card.new(card))
+        evaluator = Evaluator()
+        AGENT.hand_rank = evaluator.evaluate([AGENT.hand[0], AGENT.hand[1], AGENT.hand[2]],
+                                             [AGENT.hand[3], AGENT.hand[4]])
+        AGENT.hand_class = evaluator.class_to_string(evaluator.get_rank_class(AGENT.hand_rank))
+        AGENT.hand_fcrp = evaluator.get_five_card_rank_percentage(AGENT.hand_rank)
+    
+    def getRoundData(self):
 
+        round_data = {'Last_Action': [], 'Last_Action_Bet': [], 'Chips': [], 'Current_Bet': [], 'Draws': []}
+        
+        if self.name == POKER_CLIENT_NAME:
+            round_data['Hand_Rank'] = []
+            round_data['Hand_Class'] = []
+            round_data['Five_Card_Rank_Percentage'] = []
+            round_data['Action_Performed'] = []
+            round_data['Action_Performed_Bet'] = []
+
+        round_data['Last_Action'].append(self.last_action)
+        round_data['Last_Action_Bet'].append(self.last_action_bet)
+        round_data['Chips'].append(self.chips)
+        round_data['Current_Bet'].append(self.current_bet)
+        round_data['Draws'].append(self.draws)
+
+        if self.name == POKER_CLIENT_NAME:
+            round_data['Hand_Rank'].append(self.hand_rank)
+            round_data['Hand_Class'].append(self.hand_class)
+            round_data['Five_Card_Rank_Percentage'].append(self.hand_fcrp)
+
+        return round_data
+
+
+
+def getOpenAction(_minimumPotAfterOpen, _playersCurrentBet, _playersRemainingChips):
+    global AGENT, MINIMUM_HAND_SCORE_FOR_BET, MINIMUM_HAND_SCORE_FOR_ALL_IN
+    #AGENT.hand_rank = evalHand(AGENT.hand)
+
+    #if AGENT.hand_rank > MINIMUM_HAND_SCORE_FOR_BET:
+    #    return (ClientBase.BettingAnswer.ACTION_OPEN, 5)
+    #elif AGENT.hand_rank > MINIMUM_HAND_SCORE_FOR_ALL_IN:
+    #    return ClientBase.BettingAnswer.ACTION_ALLIN
+    #else:
+    #    return ClientBase.BettingsAnswer.ACTION_CHECK
+
+    def chooseOpenOrCheck():
+        if _playersCurrentBet + _playersRemainingChips > _minimumPotAfterOpen:
+            #return ClientBase.BettingAnswer.ACTION_OPEN,  iOpenBet
+            return ClientBase.BettingAnswer.ACTION_OPEN, (random.randint(0, 10) + _minimumPotAfterOpen) if _playersCurrentBet + _playersRemainingChips + 10 > _minimumPotAfterOpen else _minimumPotAfterOpen
+        else:
+            return ClientBase.BettingAnswer.ACTION_CHECK
+
+    return {
+        0: ClientBase.BettingAnswer.ACTION_CHECK,
+        1: ClientBase.BettingAnswer.ACTION_ALLIN,
+    }.get(random.randint(0, 2), chooseOpenOrCheck())
+
+def getCallRaiseAction(_maximumBet, _minimumAmountToRaiseTo, _playersCurrentBet, _playersRemainingChips):
+
+    def chooseRaiseOrFold():
+        if  _playersCurrentBet + _playersRemainingChips > _minimumAmountToRaiseTo:
+            return ClientBase.BettingAnswer.ACTION_RAISE,  (random.randint(0, 10) + _minimumAmountToRaiseTo) if _playersCurrentBet+ _playersRemainingChips + 10 > _minimumAmountToRaiseTo else _minimumAmountToRaiseTo
+        else:
+            return ClientBase.BettingAnswer.ACTION_FOLD
+
+    return{
+        0: ClientBase.BettingAnswer.ACTION_FOLD,
+        1: ClientBase.BettingAnswer.ACTION_ALLIN,
+        2: ClientBase.BettingAnswer.ACTION_CALL if _playersCurrentBet + _playersRemainingChips > _maximumBet else ClientBase.BettingAnswer.ACTION_FOLD
+    }.get(random.randint(0, 3), chooseRaiseOrFold())
 '''
 * Gets the name of the player.
 * @return  The name of the player as a single word without space. <code>null</code> is not a valid answer.
@@ -109,20 +201,52 @@ def queryPlayerName(_name):
 '''
 def queryOpenAction(_minimumPotAfterOpen, _playersCurrentBet, _playersRemainingChips):
     print("Player requested to choose an opening action.")
-    print AGENT
-    print OPPONENTS
-    # Random Open Action
-    def chooseOpenOrCheck():
-        if _playersCurrentBet + _playersRemainingChips > _minimumPotAfterOpen:
-            #return ClientBase.BettingAnswer.ACTION_OPEN,  iOpenBet
-            return ClientBase.BettingAnswer.ACTION_OPEN, (random.randint(0, 10) + _minimumPotAfterOpen) if _playersCurrentBet + _playersRemainingChips + 10 > _minimumPotAfterOpen else _minimumPotAfterOpen
-        else:
-            return ClientBase.BettingAnswer.ACTION_CHECK
+    global AGENT, OPPONENTS
 
-    return {
-        0: ClientBase.BettingAnswer.ACTION_CHECK,
-        1: ClientBase.BettingAnswer.ACTION_ALLIN,
-    }.get(random.randint(0, 2), chooseOpenOrCheck())
+    action = getOpenAction(_minimumPotAfterOpen, _playersCurrentBet, _playersRemainingChips)
+    print action
+
+    agent_data = AGENT.getRoundData()
+    if len(action) == 2:
+        action_performed = action[0]
+        action_performed_bet = int(action[1])
+    else:
+        action_performed = action
+        action_performed_bet = 0
+        if action == 'All-in':
+            action_performed_bet = AGENT.chips
+        if action == 'Call':
+            # Find biggest bet
+            biggest_bet = 0
+            for opponent_name in OPPONENTS:
+                opponent = OPPONENTS.get(opponent_name)
+                if opponent.current_bet > biggest_bet:
+                    biggest_bet = opponent.current_bet
+            action_performed_bet = biggest_bet
+
+    agent_data['Action_Performed'].append(action_performed)
+    agent_data['Action_Performed_Bet'].append(action_performed_bet)
+    ag_df = pd.DataFrame(agent_data)
+    path = 'datasets/open_' + AGENT.name + '.csv'
+    if os.path.exists(path):
+        with open(path, 'a') as f:
+            ag_df.to_csv(f, header=False)
+    else:
+        ag_df.to_csv(path)
+
+    for name in OPPONENTS:
+        opponent = OPPONENTS.get(name)
+        opponent_data = opponent.getRoundData()
+        op_df = pd.DataFrame(opponent_data)
+        path = 'datasets/open_' + name + '.csv'
+        if os.path.exists(path):
+            with open(path, 'a') as f:
+                op_df.to_csv(f, header=False)
+        else:
+            op_df.to_csv(path)
+
+    # Random Open Action
+    return action
 
 '''
 * Modify queryCallRaiseAction() and add your strategy here
@@ -145,19 +269,53 @@ def queryOpenAction(_minimumPotAfterOpen, _playersCurrentBet, _playersRemainingC
 '''
 def queryCallRaiseAction(_maximumBet, _minimumAmountToRaiseTo, _playersCurrentBet, _playersRemainingChips):
     print("Player requested to choose a call/raise action.")
-    print AGENT
-    print OPPONENTS
-    # Random Open Action
-    def chooseRaiseOrFold():
-        if  _playersCurrentBet + _playersRemainingChips > _minimumAmountToRaiseTo:
-            return ClientBase.BettingAnswer.ACTION_RAISE,  (random.randint(0, 10) + _minimumAmountToRaiseTo) if _playersCurrentBet+ _playersRemainingChips + 10 > _minimumAmountToRaiseTo else _minimumAmountToRaiseTo
+    global AGENT, OPPONENTS
+
+    action = getCallRaiseAction(_maximumBet, _minimumAmountToRaiseTo, _playersCurrentBet, _playersRemainingChips)
+    print action
+
+    agent_data = AGENT.getRoundData()
+
+    if len(action) == 2:
+        action_performed = action[0]
+        action_performed_bet = int(action[1])
+    else:
+        action_performed = action
+        action_performed_bet = 0
+        if action == 'All-in':
+            action_performed_bet = AGENT.chips
+        if action == 'Call':
+            # Find biggest bet
+            biggest_bet = 0
+            for opponent_name in OPPONENTS:
+                opponent = OPPONENTS.get(opponent_name)
+                if opponent.current_bet > biggest_bet:
+                    biggest_bet = opponent.current_bet
+            action_performed_bet = biggest_bet
+
+    agent_data['Action_Performed'] = [action_performed]
+    agent_data['Action_Performed_Bet'] = [action_performed_bet]
+    ag_df = pd.DataFrame(agent_data)
+    path = 'datasets/respond_' + AGENT.name + '.csv'
+    if os.path.exists(path):
+        with open(path, 'a') as f:
+            ag_df.to_csv(f, header=False)
+    else:
+        ag_df.to_csv(path)
+
+    for name in OPPONENTS:
+        opponent = OPPONENTS.get(name)
+        opponent_data = opponent.getRoundData()
+        op_df = pd.DataFrame(opponent_data)
+        path = 'datasets/respond_' + name + '.csv'
+        if os.path.exists(path):
+            with open(path, 'a') as f:
+                op_df.to_csv(f, header=False)
         else:
-            return ClientBase.BettingAnswer.ACTION_FOLD
-    return {
-        0: ClientBase.BettingAnswer.ACTION_FOLD,
-        1: ClientBase.BettingAnswer.ACTION_ALLIN,
-        2: ClientBase.BettingAnswer.ACTION_CALL if _playersCurrentBet + _playersRemainingChips > _maximumBet else ClientBase.BettingAnswer.ACTION_FOLD
-    }.get(random.randint(0, 3), chooseRaiseOrFold())
+            op_df.to_csv(path)
+
+    # Random Open Action
+    return action
 
 '''
 * Modify queryCardsToThrow() and add your strategy to throw cards
@@ -169,9 +327,8 @@ def queryCallRaiseAction(_maximumBet, _minimumAmountToRaiseTo, _playersCurrentBe
 '''
 def queryCardsToThrow(_hand):
     print("Requested information about what cards to throw")
-    print AGENT
-    print OPPONENTS
-    print(_hand)
+    global AGENT, OPPONENTS
+    Card.print_pretty_cards(AGENT.hand)
     return _hand[random.randint(0, 4)] + ' '
 
 # InfoFunction:
@@ -192,7 +349,6 @@ def infoNewRound(_round):
     else:
         GAME_ANTE = INITIAL_ANTE
         AGENT = Player(name=POKER_CLIENT_NAME)
-        print(AGENT.name, "has", AGENT.chips, "chips")
     print (AGENT.name, "has", AGENT.chips, "chips")
     if AGENT.chips >= GAME_ANTE:
         AGENT.updateBet(GAME_ANTE)
@@ -221,7 +377,6 @@ def infoPlayerChips(_playerName, _chips):
         OPPONENTS[_playerName] = Player(name=_playerName, chips=_chips)
     print (_playerName, "has", OPPONENTS.get(_playerName).chips, "chips")
 
-
 '''
 * Called when the ante has changed.
 * @param ante  the new value of the ante.
@@ -229,7 +384,6 @@ def infoPlayerChips(_playerName, _chips):
 def infoAnteChanged(_ante):
     global GAME_ANTE, AGENT
     GAME_ANTE = int(_ante)
-    AGENT.updateBet(GAME_ANTE)
     print('The ante is: ' + _ante)
 
 '''
@@ -276,7 +430,6 @@ def infoPlayerOpen(_playerName, _openBet):
             print _playerName + 'out of sync...'
         return
     print("Player " + _playerName + " opened, has put " + str(_openBet) + " chips into the pot.")
-
 
 '''
 * Called when a player checks.
@@ -349,23 +502,11 @@ def infoPlayerCall(_playerName):
 
     if _playerName in OPPONENTS:
         opponent = OPPONENTS.get(_playerName)
-        # TODO check if needed
-        if opponent.chips < biggest_bet:
-            chips = opponent.chips
-            opponent.betAll()
-            opponent.appendAction((ClientBase.BettingAnswer.ACTION_CALL, chips))
-        else:
-            opponent.updateBet(biggest_bet)
-            opponent.appendAction((ClientBase.BettingAnswer.ACTION_CALL, biggest_bet))
+        opponent.updateBet(biggest_bet)
+        opponent.appendAction((ClientBase.BettingAnswer.ACTION_CALL, biggest_bet))
     elif _playerName == AGENT.name:
-        # TODO check if needed
-        if AGENT.chips < biggest_bet:
-            chips = AGENT.chips
-            AGENT.betAll()
-            AGENT.appendAction((ClientBase.BettingAnswer.ACTION_CALL, chips))
-        else:
-            AGENT.updateBet(biggest_bet)
-            AGENT.appendAction((ClientBase.BettingAnswer.ACTION_CALL, biggest_bet))
+        AGENT.updateBet(biggest_bet)
+        AGENT.appendAction((ClientBase.BettingAnswer.ACTION_CALL, biggest_bet))
     else:
         if ROUND == 1:
             opponent = Player(name=_playerName)
@@ -451,16 +592,22 @@ def infoPlayerDraw(_playerName, _cardCount):
 '''
 def infoPlayerHand(_playerName, _hand):
     global AGENT, OPPONENTS
+    if len(_hand) > 5:
+        print 'invalid _hand query, resolving..'
+        error = _hand[5:]
+        _hand = _hand[:5]
+        for i in range(0, len(error), 3):
+            action = error[i]
+            if action == 'Round_result':
+                print 'sending round result with info function'
+                infoRoundResult(error[i+1], error[i+2])
+            if action == 'Player_Hand':
+                print error[i:i+5]
+                i += 5
+    print _hand
 
-    if _playerName in OPPONENTS:
-        opponent = OPPONENTS.get(_playerName)
-        opponent.setHand(_hand)
-        print("Player " + _playerName + " hand " + str(opponent.hand))
-
-    elif _playerName == AGENT.name:
+    if _playerName == AGENT.name:
         AGENT.setHand(_hand)
-        print("Player " + _playerName + " hand " + str(AGENT.hand))
-
 
 '''
 * Called during the showdown when a players undisputed win is reported.
@@ -480,7 +627,6 @@ def infoRoundUndisputedWin(_playerName, _winAmount):
         print _playerName + 'out of sync'
         return
     print _playerName + ' won ' + str(_winAmount) + ' chips undisputed '
-
 
 '''
 * Called during the showdown when a players win is reported. If a player does not win anything,
