@@ -1,7 +1,5 @@
 __author__ = 'fyt'
 
-
-
 import socket
 import random
 import ClientBase
@@ -12,7 +10,7 @@ TCP_PORT = 5000
 BUFFER_SIZE = 1024
 
 # Agent
-POKER_CLIENT_NAME = 'Alice'
+POKER_CLIENT_NAME = 'Tom'
 CURRENT_HAND = []
 
 class pokerGames(object):

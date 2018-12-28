@@ -122,6 +122,7 @@ def infoNewRound(_round):
 '''
 def infoGameOver():
     print('The game is over.')
+    exit()
 
 '''
 * Called when the server informs the players how many chips a player has.

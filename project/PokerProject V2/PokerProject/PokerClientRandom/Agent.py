@@ -1,22 +1,40 @@
 __author__ = 'fyt'
-
+# TODO resolve error when discarding cards (IndexError?)
+# TODO Provide our data and get prediction for different performed_actions, the one with the best probability of target should be chosed.
+# TODO add empty player in opponents list if not 5 players.
+# TODO add Johnny english as opponent and train on him.
+# Todo add card throwing method.
 import socket
 import random
 import ClientBase
 import os.path
 import pandas as pd
+import numpy as np
 from deuces import Evaluator, Card
+from sklearn.model_selection import train_test_split
+from sklearn import naive_bayes
 
 # IP address and port
 TCP_IP = '127.0.0.1'
 TCP_PORT = 5000
 BUFFER_SIZE = 1024
 
+# Datasets
+#AGENT_OPEN_DATA = np.loadtxt(open("datasets/open_James.csv", "rb"), delimiter=",", skiprows=1)
+#OP1_OPEN_DATA = np.loadtxt(open("datasets/open_Alice.csv", "rb"), delimiter=",", skiprows=1)
+#OP2_OPEN_DATA = np.loadtxt(open("datasets/open_Bob.csv", "rb"), delimiter=",", skiprows=1)
+#OP3_OPEN_DATA = np.loadtxt(open("datasets/open_Mark.csv", "rb"), delimiter=",", skiprows=1)
+#OP4_OPEN_DATA = np.loadtxt(open("datasets/open_Tom.csv", "rb"), delimiter=",", skiprows=1)
+#AGENT_RESPOND_DATA = np.loadtxt(open("datasets/respond_James.csv", "rb"), delimiter=",", skiprows=1)
+#OP1_RESPOND_DATA = np.loadtxt(open("datasets/respond_Alice.csv", "rb"), delimiter=",", skiprows=1)
+#OP2_RESPOND_DATA = np.loadtxt(open("datasets/respond_Bob.csv", "rb"), delimiter=",", skiprows=1)
+#OP3_RESPOND_DATA = np.loadtxt(open("datasets/respond_Mark.csv", "rb"), delimiter=",", skiprows=1)
+#OP4_RESPOND_DATA = np.loadtxt(open("datasets/respond_Tom.csv", "rb"), delimiter=",", skiprows=1)
+
+
 # Agent
 POKER_CLIENT_NAME = 'James'
 AGENT = object
-MINIMUM_HAND_SCORE_FOR_BET = 10
-MINIMUM_HAND_SCORE_FOR_ALL_IN = 20
 
 # Opponents
 OPPONENTS = {}
@@ -27,8 +45,47 @@ INITIAL_ANTE = 10
 GAME_ANTE = 0
 ROUND = 0
 BETTING_PHASE = 0
+RESULT = -1
+RESULT_CHIPS = 0
 
+def actionToDigit(_action):
 
+    if _action == 'Fold':
+        return 0
+    elif _action == 'Check':
+        return 1
+    elif _action == 'Call':
+        return 2
+    elif _action == 'Open':
+        return 3
+    elif _action == 'Raise':
+        return 4
+    elif _action == 'All-in':
+        return 5
+    else:
+        return -1
+
+def handClassToDigit(_class):
+    if _class == 'High Card':
+        return 0
+    elif _class == 'Pair':
+        return 1
+    elif _class == 'Two Pair':
+        return 2
+    elif _class == 'Three of a Kind':
+        return 3
+    elif _class == 'Straight':
+        return 4
+    elif _class == 'Flush':
+        return 5
+    elif _class == 'Full House':
+        return 6
+    elif _class == 'Four of a Kind':
+        return 7
+    elif _class == 'Straight Flush':
+        return 8
+    else:
+        return -1
 
 class pokerGames(object):
     def __init__(self):
@@ -55,6 +112,11 @@ class Player(object):
         self.hand_fcrp = 0.0
         self.last_action = ''
         self.last_action_bet = 0
+        if self.name == POKER_CLIENT_NAME:
+            self.all_respond_agent_round_data = []
+            self.all_open_agent_round_data = []
+            self.all_respond_opponent_round_data = []
+            self.all_open_opponent_round_data = []
 
     def __str__(self):
         return '\n---------\nname = ' + str(self.name) + '\nchips = ' + str(self.chips) + '\ndraws = ' + str(self.draws) +\
@@ -103,6 +165,12 @@ class Player(object):
         self.last_action_bet = 0
         self.actions = []
 
+        if self.name == POKER_CLIENT_NAME:
+            self.all_respond_agent_round_data = []
+            self.all_open_agent_round_data = []
+            self.all_respond_opponent_round_data = []
+            self.all_open_opponent_round_data = []
+
     def setHand(self, _hand):
         self.hand = []
         for card in _hand:
@@ -124,7 +192,7 @@ class Player(object):
             round_data['Action_Performed'] = []
             round_data['Action_Performed_Bet'] = []
 
-        round_data['Last_Action'].append(self.last_action)
+        round_data['Last_Action'].append(actionToDigit(self.last_action))
         round_data['Last_Action_Bet'].append(self.last_action_bet)
         round_data['Chips'].append(self.chips)
         round_data['Current_Bet'].append(self.current_bet)
@@ -132,7 +200,7 @@ class Player(object):
 
         if self.name == POKER_CLIENT_NAME:
             round_data['Hand_Rank'].append(self.hand_rank)
-            round_data['Hand_Class'].append(self.hand_class)
+            round_data['Hand_Class'].append(handClassToDigit(self.hand_class))
             round_data['Five_Card_Rank_Percentage'].append(self.hand_fcrp)
 
         return round_data
@@ -175,6 +243,7 @@ def getCallRaiseAction(_maximumBet, _minimumAmountToRaiseTo, _playersCurrentBet,
         1: ClientBase.BettingAnswer.ACTION_ALLIN,
         2: ClientBase.BettingAnswer.ACTION_CALL if _playersCurrentBet + _playersRemainingChips > _maximumBet else ClientBase.BettingAnswer.ACTION_FOLD
     }.get(random.randint(0, 3), chooseRaiseOrFold())
+
 '''
 * Gets the name of the player.
 * @return  The name of the player as a single word without space. <code>null</code> is not a valid answer.
@@ -208,10 +277,10 @@ def queryOpenAction(_minimumPotAfterOpen, _playersCurrentBet, _playersRemainingC
 
     agent_data = AGENT.getRoundData()
     if len(action) == 2:
-        action_performed = action[0]
+        action_performed = actionToDigit(action[0])
         action_performed_bet = int(action[1])
     else:
-        action_performed = action
+        action_performed = actionToDigit(action)
         action_performed_bet = 0
         if action == 'All-in':
             action_performed_bet = AGENT.chips
@@ -226,24 +295,12 @@ def queryOpenAction(_minimumPotAfterOpen, _playersCurrentBet, _playersRemainingC
 
     agent_data['Action_Performed'].append(action_performed)
     agent_data['Action_Performed_Bet'].append(action_performed_bet)
-    ag_df = pd.DataFrame(agent_data)
-    path = 'datasets/open_' + AGENT.name + '.csv'
-    if os.path.exists(path):
-        with open(path, 'a') as f:
-            ag_df.to_csv(f, header=False)
-    else:
-        ag_df.to_csv(path)
+    AGENT.all_open_agent_round_data.append(agent_data)
 
     for name in OPPONENTS:
         opponent = OPPONENTS.get(name)
         opponent_data = opponent.getRoundData()
-        op_df = pd.DataFrame(opponent_data)
-        path = 'datasets/open_' + name + '.csv'
-        if os.path.exists(path):
-            with open(path, 'a') as f:
-                op_df.to_csv(f, header=False)
-        else:
-            op_df.to_csv(path)
+        AGENT.all_open_opponent_round_data.append((opponent_data, name))
 
     # Random Open Action
     return action
@@ -293,26 +350,14 @@ def queryCallRaiseAction(_maximumBet, _minimumAmountToRaiseTo, _playersCurrentBe
                     biggest_bet = opponent.current_bet
             action_performed_bet = biggest_bet
 
-    agent_data['Action_Performed'] = [action_performed]
+    agent_data['Action_Performed'] = [actionToDigit(action_performed)]
     agent_data['Action_Performed_Bet'] = [action_performed_bet]
-    ag_df = pd.DataFrame(agent_data)
-    path = 'datasets/respond_' + AGENT.name + '.csv'
-    if os.path.exists(path):
-        with open(path, 'a') as f:
-            ag_df.to_csv(f, header=False)
-    else:
-        ag_df.to_csv(path)
+    AGENT.all_respond_agent_round_data.append(agent_data)
 
     for name in OPPONENTS:
         opponent = OPPONENTS.get(name)
         opponent_data = opponent.getRoundData()
-        op_df = pd.DataFrame(opponent_data)
-        path = 'datasets/respond_' + name + '.csv'
-        if os.path.exists(path):
-            with open(path, 'a') as f:
-                op_df.to_csv(f, header=False)
-        else:
-            op_df.to_csv(path)
+        AGENT.all_respond_opponent_round_data.append((opponent_data, name))
 
     # Random Open Action
     return action
@@ -338,17 +383,68 @@ def queryCardsToThrow(_hand):
 * @param round the round number (increased for each new round).
 '''
 def infoNewRound(_round):
-    global ROUND, BETTING_PHASE, AGENT, OPPONENTS, GAME_ANTE
+    global ROUND, BETTING_PHASE, AGENT, OPPONENTS, GAME_ANTE, RESULT, RESULT_CHIPS
 
-    BETTING_PHASE = 0
     ROUND = int(_round)
-    OPPONENTS = {}
 
     if ROUND > 1:
+        if RESULT != -1:
+            # Store all data from previous round
+            for agent_data in AGENT.all_open_agent_round_data:
+                agent_data['Round_Result'] = []
+                agent_data['Round_Result_Chips'] = []
+                agent_data['Round_Result'].append(RESULT)
+                agent_data['Round_Result_Chips'].append(RESULT_CHIPS)
+                ag_df = pd.DataFrame(agent_data)
+                path = 'datasets/open_' + AGENT.name + '.csv'
+                if os.path.exists(path):
+                    with open(path, 'a') as f:
+                        ag_df.to_csv(f, header=False)
+                else:
+                    ag_df.to_csv(path)
+
+            for agent_data in AGENT.all_respond_agent_round_data:
+                agent_data['Round_Result'] = []
+                agent_data['Round_Result_Chips'] = []
+                agent_data['Round_Result'].append(RESULT)
+                agent_data['Round_Result_Chips'].append(RESULT_CHIPS)
+                ag_df = pd.DataFrame(agent_data)
+                path = 'datasets/respond_' + AGENT.name + '.csv'
+                if os.path.exists(path):
+                    with open(path, 'a') as f:
+                        ag_df.to_csv(f, header=False)
+                else:
+                    ag_df.to_csv(path)
+
+            for opponent_data, name in AGENT.all_open_opponent_round_data:
+                op_df = pd.DataFrame(opponent_data)
+                path = 'datasets/open_' + name + '.csv'
+                if os.path.exists(path):
+                    with open(path, 'a') as f:
+                        op_df.to_csv(f, header=False)
+                else:
+                    op_df.to_csv(path)
+
+            for opponent_data, name in AGENT.all_respond_opponent_round_data:
+                op_df = pd.DataFrame(opponent_data)
+                path = 'datasets/respond_' + name + '.csv'
+                if os.path.exists(path):
+                    with open(path, 'a') as f:
+                        op_df.to_csv(f, header=False)
+                else:
+                    op_df.to_csv(path)
         AGENT.reset()
     else:
         GAME_ANTE = INITIAL_ANTE
         AGENT = Player(name=POKER_CLIENT_NAME)
+
+    BETTING_PHASE = 0
+    for opponent_name in OPPONENTS:
+        opponent = OPPONENTS.get(opponent_name)
+        opponent.reset()
+    RESULT = -1
+    RESULT_CHIPS = 0
+
     print (AGENT.name, "has", AGENT.chips, "chips")
     if AGENT.chips >= GAME_ANTE:
         AGENT.updateBet(GAME_ANTE)
@@ -360,6 +456,7 @@ def infoNewRound(_round):
 '''
 def infoGameOver():
     print('The game is over.')
+    exit()
 
 '''
 * Called when the server informs the players how many chips a player has.
@@ -615,14 +712,18 @@ def infoPlayerHand(_playerName, _hand):
 * @param winAmount     the amount of chips the player won.
 '''
 def infoRoundUndisputedWin(_playerName, _winAmount):
-    global OPPONENTS, AGENT
+    global OPPONENTS, AGENT, RESULT, RESULT_CHIPS
     _winAmount = int(_winAmount)
 
     if _playerName in OPPONENTS:
         opponent = OPPONENTS.get(_playerName)
         opponent.updateChips(_winAmount)
+        RESULT = 0      # Lose
+        RESULT_CHIPS = -AGENT.current_bet
     elif _playerName == AGENT.name:
         AGENT.updateChips(_winAmount)
+        RESULT = 1      # Win
+        RESULT_CHIPS = _winAmount - AGENT.current_bet
     else:
         print _playerName + 'out of sync'
         return
@@ -635,14 +736,18 @@ def infoRoundUndisputedWin(_playerName, _winAmount):
 * @param winAmount     the amount of chips the player won.
 '''
 def infoRoundResult(_playerName, _winAmount):
-    global OPPONENTS, AGENT
+    global OPPONENTS, AGENT, RESULT, RESULT_CHIPS
     _winAmount = int(_winAmount)
 
     if _playerName in OPPONENTS:
         opponent = OPPONENTS.get(_playerName)
         opponent.updateChips(_winAmount)
+        RESULT = 0      # Lose
+        RESULT_CHIPS = -AGENT.current_bet
     elif _playerName == AGENT.name:
         AGENT.updateChips(_winAmount)
+        RESULT = 1      # Win
+        RESULT_CHIPS = _winAmount - AGENT.current_bet
     else:
         print _playerName + 'out of sync'
         return
