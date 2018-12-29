@@ -1,0 +1,7 @@
+    for i in range(0, 3, 1):
+        if len(AGENT.all_respond_opponent_round_data) == 4:
+            break
+        name = 'Filler' + str(i)
+        filler_player = Player(name=name, chips=0)
+        filler_data = filler_player.getRoundData()
+        AGENT.all_respond_opponent_round_data.append((filler_data, name))

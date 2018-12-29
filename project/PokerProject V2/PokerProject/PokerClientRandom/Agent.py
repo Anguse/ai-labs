@@ -1,36 +1,78 @@
 __author__ = 'fyt'
-# TODO resolve error when discarding cards (IndexError?)
-# TODO Provide our data and get prediction for different performed_actions, the one with the best probability of target should be chosed.
-# TODO add empty player in opponents list if not 5 players.
+# TODO resolve error when discarding cards (IndexError? picture in /debug)
 # TODO add Johnny english as opponent and train on him.
-# Todo add card throwing method.
+# TODO make classification
+# TODO change to naive bayes
+
+
 import socket
 import random
 import ClientBase
 import os.path
 import pandas as pd
 import numpy as np
+from operator import itemgetter
 from deuces import Evaluator, Card
 from sklearn.model_selection import train_test_split
 from sklearn import naive_bayes
+from sklearn import neighbors as nb
+import warnings
+import exceptions
+
+warnings.filterwarnings("ignore")
 
 # IP address and port
 TCP_IP = '127.0.0.1'
 TCP_PORT = 5000
 BUFFER_SIZE = 1024
 
-# Datasets
-#AGENT_OPEN_DATA = np.loadtxt(open("datasets/open_James.csv", "rb"), delimiter=",", skiprows=1)
-#OP1_OPEN_DATA = np.loadtxt(open("datasets/open_Alice.csv", "rb"), delimiter=",", skiprows=1)
-#OP2_OPEN_DATA = np.loadtxt(open("datasets/open_Bob.csv", "rb"), delimiter=",", skiprows=1)
-#OP3_OPEN_DATA = np.loadtxt(open("datasets/open_Mark.csv", "rb"), delimiter=",", skiprows=1)
-#OP4_OPEN_DATA = np.loadtxt(open("datasets/open_Tom.csv", "rb"), delimiter=",", skiprows=1)
-#AGENT_RESPOND_DATA = np.loadtxt(open("datasets/respond_James.csv", "rb"), delimiter=",", skiprows=1)
-#OP1_RESPOND_DATA = np.loadtxt(open("datasets/respond_Alice.csv", "rb"), delimiter=",", skiprows=1)
-#OP2_RESPOND_DATA = np.loadtxt(open("datasets/respond_Bob.csv", "rb"), delimiter=",", skiprows=1)
-#OP3_RESPOND_DATA = np.loadtxt(open("datasets/respond_Mark.csv", "rb"), delimiter=",", skiprows=1)
-#OP4_RESPOND_DATA = np.loadtxt(open("datasets/respond_Tom.csv", "rb"), delimiter=",", skiprows=1)
+try:
+    # Datasets
+    AGENT_OPEN_DATA = np.loadtxt(open("datasets/open_agent.csv", "rb"), delimiter=",", skiprows=1)
+    OP1_OPEN_DATA = np.loadtxt(open("datasets/open_opponent0.csv", "rb"), delimiter=",", skiprows=1)
+    OP2_OPEN_DATA = np.loadtxt(open("datasets/open_opponent1.csv", "rb"), delimiter=",", skiprows=1)
+    OP3_OPEN_DATA = np.loadtxt(open("datasets/open_opponent2.csv", "rb"), delimiter=",", skiprows=1)
+    OP4_OPEN_DATA = np.loadtxt(open("datasets/open_opponent3.csv", "rb"), delimiter=",", skiprows=1)
 
+    AGENT_RESPOND_DATA = np.loadtxt(open("datasets/respond_agent.csv", "rb"), delimiter=",", skiprows=1)
+    OP1_RESPOND_DATA = np.loadtxt(open("datasets/respond_opponent0.csv", "rb"), delimiter=",", skiprows=1)
+    OP2_RESPOND_DATA = np.loadtxt(open("datasets/respond_opponent1.csv", "rb"), delimiter=",", skiprows=1)
+    OP3_RESPOND_DATA = np.loadtxt(open("datasets/respond_opponent2.csv", "rb"), delimiter=",", skiprows=1)
+    OP4_RESPOND_DATA = np.loadtxt(open("datasets/respond_opponent3.csv", "rb"), delimiter=",", skiprows=1)
+
+    OPEN_TRAINING_DATA = []
+    OPEN_TARGET_DATA = []
+    RESPOND_TRAINING_DATA = []
+    RESPOND_TARGET_DATA = []
+
+    for i in range(0, len(AGENT_OPEN_DATA), 1):
+        OPEN_TRAINING_ROW = []
+        OPEN_TARGET_DATA.append(AGENT_OPEN_DATA[i][12])
+        OPEN_TRAINING_ROW.extend(AGENT_OPEN_DATA[i][1:12])
+        OPEN_TRAINING_ROW.extend(OP1_OPEN_DATA[i][1:])
+        OPEN_TRAINING_ROW.extend(OP2_OPEN_DATA[i][1:])
+        OPEN_TRAINING_ROW.extend(OP3_OPEN_DATA[i][1:])
+        OPEN_TRAINING_ROW.extend(OP4_OPEN_DATA[i][1:])
+        OPEN_TRAINING_DATA.append(OPEN_TRAINING_ROW)
+
+    for i in range(0, len(AGENT_RESPOND_DATA), 1):
+        RESPOND_TRAINING_ROW = []
+        RESPOND_TARGET_DATA.append(AGENT_RESPOND_DATA[i][12])
+        RESPOND_TRAINING_ROW.extend(AGENT_RESPOND_DATA[i][1:12])
+        RESPOND_TRAINING_ROW.extend(OP1_RESPOND_DATA[i][1:])
+        RESPOND_TRAINING_ROW.extend(OP2_RESPOND_DATA[i][1:])
+        RESPOND_TRAINING_ROW.extend(OP3_RESPOND_DATA[i][1:])
+        RESPOND_TRAINING_ROW.extend(OP4_RESPOND_DATA[i][1:])
+        RESPOND_TRAINING_DATA.append(RESPOND_TRAINING_ROW)
+
+    knn_open = nb.KNeighborsClassifier(n_neighbors=3, metric='cityblock')
+    knn_open.fit(OPEN_TRAINING_DATA, OPEN_TARGET_DATA)
+
+    knn_respond = nb.KNeighborsClassifier(n_neighbors=3, metric='cityblock')
+    knn_respond.fit(RESPOND_TRAINING_DATA, RESPOND_TARGET_DATA)
+
+except IOError as e:
+    print e
 
 # Agent
 POKER_CLIENT_NAME = 'James'
@@ -47,6 +89,130 @@ ROUND = 0
 BETTING_PHASE = 0
 RESULT = -1
 RESULT_CHIPS = 0
+
+Ranks = {
+    '2': 1,
+    '3': 2,
+    '4': 3,
+    '5': 4,
+    '6': 5,
+    '7': 6,
+    '8': 7,
+    '9': 8,
+    'T': 9,
+    'J': 10,
+    'Q': 11,
+    'K': 12,
+    'A': 13
+}
+
+Suits = {
+    'd': 1,
+    'c': 2,
+    'h': 3,
+    's': 4
+}
+
+Types = {
+    'HighCard':      1,
+    'OnePair':       2,
+    'TwoPairs':      3,
+    '3OfAKind':      4,
+    'Straight':      5,
+    'Flush':         6,
+    'FullHouse':     7,
+    '4OfAKind':      8,
+    'StraightFlush': 9
+}
+
+def getGameState(_action):
+
+    global AGENT, OPPONENTS
+    data = []
+    agent_data = AGENT.getRoundData()
+
+    if len(_action) == 2:
+        action_performed = actionToDigit(_action[0])
+        action_performed_bet = int(_action[1])
+    else:
+        action_performed = actionToDigit(_action)
+        action_performed_bet = 0
+
+    agent_data['Action_Performed'].append(action_performed)
+    agent_data['Action_Performed_Bet'].append(action_performed_bet)
+
+    data.append(agent_data.get('Action_Performed')[0])
+    data.append(agent_data.get('Action_Performed_Bet')[0])
+    data.append(agent_data.get('Ante')[0])
+    data.append(agent_data.get('Chips')[0])
+    data.append(agent_data.get('Current_Bet')[0])
+    data.append(agent_data.get('Draws')[0])
+    data.append(agent_data.get('Five_Card_Rank_Percentage')[0])
+    data.append(agent_data.get('Hand_Class')[0])
+    data.append(agent_data.get('Hand_Rank')[0])
+    data.append(agent_data.get('Last_Action')[0])
+    data.append(agent_data.get('Last_Action_Bet')[0])
+
+    for name in OPPONENTS:
+        opponent = OPPONENTS.get(name)
+        opponent_data = opponent.getRoundData()
+        data.append(opponent_data.get('Chips')[0])
+        data.append(opponent_data.get('Current_Bet')[0])
+        data.append(opponent_data.get('Draws')[0])
+        data.append(opponent_data.get('Last_Action')[0])
+        data.append(opponent_data.get('Last_Action_Bet')[0])
+
+    return data
+
+def saveData():
+    
+    global AGENT, OPPONENTS, RESULT, RESULT_CHIPS
+    # Store all data from previous round
+    for agent_data in AGENT.all_open_agent_round_data:
+        agent_data['Round_Result'] = []
+        agent_data['Round_Result_Chips'] = []
+        agent_data['Round_Result'].append(RESULT)
+        agent_data['Round_Result_Chips'].append(RESULT_CHIPS)
+        ag_df = pd.DataFrame(agent_data)
+        path = 'datasets/open_' + 'agent' + '.csv'
+        if os.path.exists(path):
+            with open(path, 'a') as f:
+                ag_df.to_csv(f, header=False)
+        else:
+            ag_df.to_csv(path)
+
+    for agent_data in AGENT.all_respond_agent_round_data:
+        agent_data['Round_Result'] = []
+        agent_data['Round_Result_Chips'] = []
+        agent_data['Ante'] = []
+        agent_data['Round_Result'].append(RESULT)
+        agent_data['Round_Result_Chips'].append(RESULT_CHIPS)
+        agent_data['Ante'].append(GAME_ANTE)
+        ag_df = pd.DataFrame(agent_data)
+        path = 'datasets/respond_' + 'agent' + '.csv'
+        if os.path.exists(path):
+            with open(path, 'a') as f:
+                ag_df.to_csv(f, header=False)
+        else:
+            ag_df.to_csv(path)
+
+    for opponent_data, number in AGENT.all_open_opponent_round_data:
+        op_df = pd.DataFrame(opponent_data)
+        path = 'datasets/open_opponent' + str(number) + '.csv'
+        if os.path.exists(path):
+            with open(path, 'a') as f:
+                op_df.to_csv(f, header=False)
+        else:
+            op_df.to_csv(path)
+
+    for opponent_data, number in AGENT.all_respond_opponent_round_data:
+        op_df = pd.DataFrame(opponent_data)
+        path = 'datasets/respond_opponent' + str(number) + '.csv'
+        if os.path.exists(path):
+            with open(path, 'a') as f:
+                op_df.to_csv(f, header=False)
+        else:
+            op_df.to_csv(path)
 
 def actionToDigit(_action):
 
@@ -87,6 +253,129 @@ def handClassToDigit(_class):
     else:
         return -1
 
+def strengthPlayerHand(_hand):
+    _checklist = []
+    # Get the type of Hand
+    def evaluateHand(_hand):
+        count = 0
+        for card1 in _hand:
+            for card2 in _hand:
+                if (card1[0] == card2[0]) and (card1[1] != card2[1]):
+                    count += 1
+        return count
+
+    # Use the "count" to analyse hand
+    count_ = evaluateHand(_hand)
+    sub1 = 0
+    score = [' ', ' ', ' ']
+
+    if count_ == 12:
+        for card1 in _hand:
+            for card2 in _hand:
+                if (card1[0] == card2[0]) and (card1[1] != card2[1]):
+                    sub1 += 1
+                    if card1 not in _checklist:
+                        _checklist.append(card1)
+                    if card2 not in _checklist:
+                        _checklist.append(card2)
+            if sub1 == 3:
+                score = [Types.get('4OfAKind'), card1[0], card1[1]]
+                break
+
+    elif count_ == 8:
+        for card1 in _hand:
+            for card2 in _hand:
+                if (card1[0] == card2[0]) and (card1[1] != card2[1]):
+                    sub1 += 1
+            if sub1 == 1:
+                sub1 = 0
+            if sub1 == 2:
+                score = [Types.get('FullHouse'), card1[0], card1[1]]
+                break
+
+    elif count_ == 6:
+        for card1 in _hand:
+            for card2 in _hand:
+                if (card1[0] == card2[0]) and (card1[1] != card2[1]):
+                    sub1 += 1
+                    if card1 not in _checklist:
+                        _checklist.append(card1)
+                    if card2 not in _checklist:
+                        _checklist.append(card2)
+            if sub1 == 2:
+                score = [Types.get('3OfAKind'), card1[0], card1[1]]
+                break
+
+    elif count_ == 4:
+        needCard1 = ['', '']
+        needCard2 = ['', '']
+        for card1 in _hand:
+            for card2 in _hand:
+                # card1 keep the first hand card, card1 use every card to compare the card1
+                if card1[0] == card2[0] and card1[1] != card2[1]:
+                    if Suits[card1[1]] > Suits[card2[1]]:
+                        if needCard1 == ['', '']:
+                            needCard1 = card1
+                    else:
+                        if needCard1 == ['', '']:
+                            needCard1 = card2
+                    if card1 not in _checklist:
+                        _checklist.append(card1)
+                    if card2 not in _checklist:
+                        _checklist.append(card2)
+
+                if card1[0] == card2[0] and card1[1] != card2[1] \
+                        and card1[0] != needCard1[0] and card2[0] != needCard1[0]:
+                    if Suits[card1[1]] > Suits[card2[1]]:
+                        if needCard2 == ['', '']:
+                            needCard2 = card1
+                    else:
+                        if needCard2 == ['', '']:
+                            needCard2 = card2
+                    if card1 not in _checklist:
+                        _checklist.append(card1)
+                    if card2 not in _checklist:
+                        _checklist.append(card2)
+
+        if Ranks[needCard1[0]] > Ranks[needCard2[0]]:
+            score = [Types.get('TwoPairs'), needCard1[0], needCard1[1]]
+        else:
+            score = [Types.get('TwoPairs'), needCard2[0], needCard2[1]]
+
+    elif count_ == 2:
+        for card1 in _hand:
+            for card2 in _hand:
+                if (card1[0] == card2[0]) and (card1[1] > card2[1]):
+                    sub1 += 1
+                    _checklist.append(card1)
+                    _checklist.append(card2)
+            if sub1 == 1:
+                score = [Types.get('OnePair'), card1[0], card1[1]]
+                break
+
+    elif count_ == 0:
+        def sortHand(_hand):
+            _handsorted_ = sorted([[card_, Ranks[card_[0]]] for card_ in _hand], key=itemgetter(1))[:]
+            return [card_[0] for card_ in _handsorted_]
+
+        _hand = sortHand(_hand)
+        score = [Types.get('HighCard'), _hand[4][0], _hand[4][1]]
+
+        if _hand[0][1] == _hand[1][1] == _hand[2][1] == _hand[3][1] == _hand[4][1]:
+            score = [Types.get('Flush'), _hand[4][0], _hand[4][1]]
+
+        if (Ranks[_hand[4][0]] - Ranks[_hand[3][0]] == 1) \
+                and (Ranks[_hand[3][0]] - Ranks[_hand[2][0]] == 1) \
+                and (Ranks[_hand[2][0]] - Ranks[_hand[1][0]] == 1) \
+                and (Ranks[_hand[1][0]] - Ranks[_hand[0][0]] == 1):
+            score = [Types.get('Straight'), _hand[4][0], _hand[4][1]]
+
+            if _hand[0][1] == _hand[1][1] == _hand[2][1] == _hand[3][1] == _hand[4][1]:
+                score = [Types.get('StraightFlush'), _hand[4][0], _hand[4][1]]
+    else:
+        exit(5664)
+    return score, _checklist
+
 class pokerGames(object):
     def __init__(self):
         self.PlayerName = POKER_CLIENT_NAME
@@ -100,6 +389,7 @@ class pokerGames(object):
 * A class for each player in the game
 '''
 class Player(object):
+
     def __init__(self, name=None, chips=INITIAL_AMOUNT_OF_CHIPS):
         self.name = name        # Name of the player
         self.chips = chips      # The amount of available chips the player has
@@ -182,13 +472,14 @@ class Player(object):
         AGENT.hand_fcrp = evaluator.get_five_card_rank_percentage(AGENT.hand_rank)
     
     def getRoundData(self):
-
+        global GAME_ANTE
         round_data = {'Last_Action': [], 'Last_Action_Bet': [], 'Chips': [], 'Current_Bet': [], 'Draws': []}
         
         if self.name == POKER_CLIENT_NAME:
             round_data['Hand_Rank'] = []
             round_data['Hand_Class'] = []
             round_data['Five_Card_Rank_Percentage'] = []
+            round_data['Ante'] = []
             round_data['Action_Performed'] = []
             round_data['Action_Performed_Bet'] = []
 
@@ -202,47 +493,68 @@ class Player(object):
             round_data['Hand_Rank'].append(self.hand_rank)
             round_data['Hand_Class'].append(handClassToDigit(self.hand_class))
             round_data['Five_Card_Rank_Percentage'].append(self.hand_fcrp)
+            round_data['Ante'].append(GAME_ANTE)
 
         return round_data
 
 
-
 def getOpenAction(_minimumPotAfterOpen, _playersCurrentBet, _playersRemainingChips):
-    global AGENT, MINIMUM_HAND_SCORE_FOR_BET, MINIMUM_HAND_SCORE_FOR_ALL_IN
-    #AGENT.hand_rank = evalHand(AGENT.hand)
+    global AGENT, OPPONENTS, knn_open
 
-    #if AGENT.hand_rank > MINIMUM_HAND_SCORE_FOR_BET:
-    #    return (ClientBase.BettingAnswer.ACTION_OPEN, 5)
-    #elif AGENT.hand_rank > MINIMUM_HAND_SCORE_FOR_ALL_IN:
-    #    return ClientBase.BettingAnswer.ACTION_ALLIN
-    #else:
-    #    return ClientBase.BettingsAnswer.ACTION_CHECK
+    actions = ['Check', 'All-in']
+    for i in range(2, 12, 2):
+        if AGENT.chips > i:
+            actions.append(('Open', AGENT.current_bet + i))
 
-    def chooseOpenOrCheck():
-        if _playersCurrentBet + _playersRemainingChips > _minimumPotAfterOpen:
-            #return ClientBase.BettingAnswer.ACTION_OPEN,  iOpenBet
-            return ClientBase.BettingAnswer.ACTION_OPEN, (random.randint(0, 10) + _minimumPotAfterOpen) if _playersCurrentBet + _playersRemainingChips + 10 > _minimumPotAfterOpen else _minimumPotAfterOpen
-        else:
-            return ClientBase.BettingAnswer.ACTION_CHECK
+    win_predictions = []
+    best_prediction = 0
+    for action in actions:
+        state = getGameState(action)
+        predicted = list(knn_open.predict_proba([state])[0])
+        win_predictions.append((action, predicted[1]))
+        if predicted[1] > best_prediction:
+            best_prediction = predicted[1]
 
-    return {
-        0: ClientBase.BettingAnswer.ACTION_CHECK,
-        1: ClientBase.BettingAnswer.ACTION_ALLIN,
-    }.get(random.randint(0, 2), chooseOpenOrCheck())
+    print len(win_predictions)
+
+    for action, prediction in win_predictions:
+            if prediction < best_prediction:
+                win_predictions.remove((action, prediction))
+
+    print len(win_predictions)
+
+    action, prediction = random.choice(win_predictions)
+
+    return action
 
 def getCallRaiseAction(_maximumBet, _minimumAmountToRaiseTo, _playersCurrentBet, _playersRemainingChips):
+    global AGENT, OPPONENTS, knn_open
 
-    def chooseRaiseOrFold():
-        if  _playersCurrentBet + _playersRemainingChips > _minimumAmountToRaiseTo:
-            return ClientBase.BettingAnswer.ACTION_RAISE,  (random.randint(0, 10) + _minimumAmountToRaiseTo) if _playersCurrentBet+ _playersRemainingChips + 10 > _minimumAmountToRaiseTo else _minimumAmountToRaiseTo
-        else:
-            return ClientBase.BettingAnswer.ACTION_FOLD
+    actions = ['All-in', 'Fold']
+    for i in range(2, 12, 2):
+        if AGENT.chips > _minimumAmountToRaiseTo + i:
+            actions.append(('Raise', _minimumAmountToRaiseTo + i))
 
-    return{
-        0: ClientBase.BettingAnswer.ACTION_FOLD,
-        1: ClientBase.BettingAnswer.ACTION_ALLIN,
-        2: ClientBase.BettingAnswer.ACTION_CALL if _playersCurrentBet + _playersRemainingChips > _maximumBet else ClientBase.BettingAnswer.ACTION_FOLD
-    }.get(random.randint(0, 3), chooseRaiseOrFold())
+    win_predictions = []
+    best_prediction = 0
+    for action in actions:
+        state = getGameState(action)
+        predicted = list(knn_open.predict_proba([state])[0])
+        win_predictions.append((action, predicted[1]))
+        if predicted[1] > best_prediction:
+            best_prediction = predicted[1]
+
+    print len(win_predictions)
+
+    for action, prediction in win_predictions:
+        if prediction < best_prediction:
+            win_predictions.remove((action, prediction))
+
+    print len(win_predictions)
+
+    action, prediction = random.choice(win_predictions)
+
+    return action
 
 '''
 * Gets the name of the player.
@@ -272,6 +584,12 @@ def queryOpenAction(_minimumPotAfterOpen, _playersCurrentBet, _playersRemainingC
     print("Player requested to choose an opening action.")
     global AGENT, OPPONENTS
 
+    # If there is less than 4 opponents, fill these slots with filler players
+    for i in range(0, 3, 1):
+        if len(OPPONENTS) < 4:
+            name = 'Filler' + str(i)
+            OPPONENTS[name] = Player(name=name, chips=0)
+
     action = getOpenAction(_minimumPotAfterOpen, _playersCurrentBet, _playersRemainingChips)
     print action
 
@@ -297,10 +615,12 @@ def queryOpenAction(_minimumPotAfterOpen, _playersCurrentBet, _playersRemainingC
     agent_data['Action_Performed_Bet'].append(action_performed_bet)
     AGENT.all_open_agent_round_data.append(agent_data)
 
+    opponent_number = 0
     for name in OPPONENTS:
         opponent = OPPONENTS.get(name)
         opponent_data = opponent.getRoundData()
-        AGENT.all_open_opponent_round_data.append((opponent_data, name))
+        AGENT.all_open_opponent_round_data.append((opponent_data, opponent_number))
+        opponent_number += 1
 
     # Random Open Action
     return action
@@ -328,6 +648,12 @@ def queryCallRaiseAction(_maximumBet, _minimumAmountToRaiseTo, _playersCurrentBe
     print("Player requested to choose a call/raise action.")
     global AGENT, OPPONENTS
 
+    # If there is less than 4 opponents, fill these slots with filler players
+    for i in range(0, 3, 1):
+        if len(OPPONENTS) < 4:
+            name = 'Filler' + str(i)
+            OPPONENTS[name] = Player(name=name, chips=0)
+
     action = getCallRaiseAction(_maximumBet, _minimumAmountToRaiseTo, _playersCurrentBet, _playersRemainingChips)
     print action
 
@@ -354,10 +680,12 @@ def queryCallRaiseAction(_maximumBet, _minimumAmountToRaiseTo, _playersCurrentBe
     agent_data['Action_Performed_Bet'] = [action_performed_bet]
     AGENT.all_respond_agent_round_data.append(agent_data)
 
+    opponent_number = 0
     for name in OPPONENTS:
         opponent = OPPONENTS.get(name)
         opponent_data = opponent.getRoundData()
-        AGENT.all_respond_opponent_round_data.append((opponent_data, name))
+        AGENT.all_respond_opponent_round_data.append((opponent_data, opponent_number))
+        opponent_number += 1
 
     # Random Open Action
     return action
@@ -371,10 +699,25 @@ def queryCallRaiseAction(_maximumBet, _minimumAmountToRaiseTo, _playersCurrentBe
 * @see     #infoCardsInHand(ca.ualberta.cs.poker.Hand)
 '''
 def queryCardsToThrow(_hand):
+    global AGENT
     print("Requested information about what cards to throw")
-    global AGENT, OPPONENTS
     Card.print_pretty_cards(AGENT.hand)
-    return _hand[random.randint(0, 4)] + ' '
+    cards_to_throw = ''
+    strength, _check = strengthPlayerHand(_hand)
+
+    # Creates a string for what cards are to be thrown. If the cards make up a rank > Highcard it's saved.
+    # If the rank is Highcard then only cards with a higher value than J is saved.
+    for k in range(len(_hand)):
+        if strength[0] == 1:
+            if (Ranks.get(_hand[k][0])) < 11:
+                cards_to_throw += _hand[k] + ' '
+        else:
+            if _hand[k] not in _check:
+                cards_to_throw += _hand[k] + ' '
+
+    print 'Throws the following: ', cards_to_throw
+
+    return cards_to_throw
 
 # InfoFunction:
 
@@ -389,50 +732,7 @@ def infoNewRound(_round):
 
     if ROUND > 1:
         if RESULT != -1:
-            # Store all data from previous round
-            for agent_data in AGENT.all_open_agent_round_data:
-                agent_data['Round_Result'] = []
-                agent_data['Round_Result_Chips'] = []
-                agent_data['Round_Result'].append(RESULT)
-                agent_data['Round_Result_Chips'].append(RESULT_CHIPS)
-                ag_df = pd.DataFrame(agent_data)
-                path = 'datasets/open_' + AGENT.name + '.csv'
-                if os.path.exists(path):
-                    with open(path, 'a') as f:
-                        ag_df.to_csv(f, header=False)
-                else:
-                    ag_df.to_csv(path)
-
-            for agent_data in AGENT.all_respond_agent_round_data:
-                agent_data['Round_Result'] = []
-                agent_data['Round_Result_Chips'] = []
-                agent_data['Round_Result'].append(RESULT)
-                agent_data['Round_Result_Chips'].append(RESULT_CHIPS)
-                ag_df = pd.DataFrame(agent_data)
-                path = 'datasets/respond_' + AGENT.name + '.csv'
-                if os.path.exists(path):
-                    with open(path, 'a') as f:
-                        ag_df.to_csv(f, header=False)
-                else:
-                    ag_df.to_csv(path)
-
-            for opponent_data, name in AGENT.all_open_opponent_round_data:
-                op_df = pd.DataFrame(opponent_data)
-                path = 'datasets/open_' + name + '.csv'
-                if os.path.exists(path):
-                    with open(path, 'a') as f:
-                        op_df.to_csv(f, header=False)
-                else:
-                    op_df.to_csv(path)
-
-            for opponent_data, name in AGENT.all_respond_opponent_round_data:
-                op_df = pd.DataFrame(opponent_data)
-                path = 'datasets/respond_' + name + '.csv'
-                if os.path.exists(path):
-                    with open(path, 'a') as f:
-                        op_df.to_csv(f, header=False)
-                else:
-                    op_df.to_csv(path)
+            saveData()
         AGENT.reset()
     else:
         GAME_ANTE = INITIAL_ANTE
@@ -455,6 +755,9 @@ def infoNewRound(_round):
 * Called when the poker server informs that the game is completed.
 '''
 def infoGameOver():
+    global AGENT, OPPONENTS, GAME_ANTE, RESULT, RESULT_CHIPS
+    if RESULT != -1:
+        saveData()
     print('The game is over.')
     exit()
 

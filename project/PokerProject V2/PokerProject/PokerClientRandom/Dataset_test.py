@@ -14,17 +14,17 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # Datasets
-AGENT_OPEN_DATA = np.loadtxt(open("datasets/open_James.csv", "rb"), delimiter=",", skiprows=1)
-OP1_OPEN_DATA = np.loadtxt(open("datasets/open_Alice.csv", "rb"), delimiter=",", skiprows=1)
-OP2_OPEN_DATA = np.loadtxt(open("datasets/open_Bob.csv", "rb"), delimiter=",", skiprows=1)
-OP3_OPEN_DATA = np.loadtxt(open("datasets/open_Mark.csv", "rb"), delimiter=",", skiprows=1)
-OP4_OPEN_DATA = np.loadtxt(open("datasets/open_Tom.csv", "rb"), delimiter=",", skiprows=1)
+AGENT_OPEN_DATA = np.loadtxt(open("datasets/open_agent.csv", "rb"), delimiter=",", skiprows=1)
+OP1_OPEN_DATA = np.loadtxt(open("datasets/open_opponent0.csv", "rb"), delimiter=",", skiprows=1)
+OP2_OPEN_DATA = np.loadtxt(open("datasets/open_opponent1.csv", "rb"), delimiter=",", skiprows=1)
+OP3_OPEN_DATA = np.loadtxt(open("datasets/open_opponent2.csv", "rb"), delimiter=",", skiprows=1)
+OP4_OPEN_DATA = np.loadtxt(open("datasets/open_opponent3.csv", "rb"), delimiter=",", skiprows=1)
 
-AGENT_RESPOND_DATA = np.loadtxt(open("datasets/respond_James.csv", "rb"), delimiter=",", skiprows=1)
-OP1_RESPOND_DATA = np.loadtxt(open("datasets/respond_Alice.csv", "rb"), delimiter=",", skiprows=1)
-OP2_RESPOND_DATA = np.loadtxt(open("datasets/respond_Bob.csv", "rb"), delimiter=",", skiprows=1)
-OP3_RESPOND_DATA = np.loadtxt(open("datasets/respond_Mark.csv", "rb"), delimiter=",", skiprows=1)
-OP4_RESPOND_DATA = np.loadtxt(open("datasets/respond_Tom.csv", "rb"), delimiter=",", skiprows=1)
+AGENT_RESPOND_DATA = np.loadtxt(open("datasets/respond_agent.csv", "rb"), delimiter=",", skiprows=1)
+OP1_RESPOND_DATA = np.loadtxt(open("datasets/respond_opponent0.csv", "rb"), delimiter=",", skiprows=1)
+OP2_RESPOND_DATA = np.loadtxt(open("datasets/respond_opponent1.csv", "rb"), delimiter=",", skiprows=1)
+OP3_RESPOND_DATA = np.loadtxt(open("datasets/respond_opponent2.csv", "rb"), delimiter=",", skiprows=1)
+OP4_RESPOND_DATA = np.loadtxt(open("datasets/respond_opponent3.csv", "rb"), delimiter=",", skiprows=1)
 
 OPEN_TRAINING_DATA = []
 OPEN_TRAINING_ROW = []
@@ -58,8 +58,6 @@ RESPOND_TRAINING_DATA.extend(OP1_RESPOND_DATA[:])
 RESPOND_TRAINING_DATA.extend(OP2_RESPOND_DATA[:])
 RESPOND_TRAINING_DATA.extend(OP3_RESPOND_DATA[:])
 RESPOND_TRAINING_DATA.extend(OP4_RESPOND_DATA[:])
-
-
 
 
 #print RESPOND_TRAINING_DATA
