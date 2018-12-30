@@ -5,7 +5,7 @@ import random
 import ClientBase
 import time
 
-from Random4 import *
+from ShitAgent import *
 
 iMsg = 0
 SIGNAL_ALIVE = '==================ALIVE======================'

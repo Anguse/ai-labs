@@ -1,7 +1,8 @@
 __author__ = 'fyt'
 
 # TODO resolve error when discarding cards (IndexError? picture in /debug)
-# TODO resolve disconnection issue (SHITTY SERVER ¤%(#¤&(#)(%)
+# TODO add Johnny english as opponent and train on him.
+# TODO resolve disconnection issue
 
 import random
 import ClientBase
@@ -79,7 +80,7 @@ except IOError as e:
 
 
 # Agent
-POKER_CLIENT_NAME = 'James'
+POKER_CLIENT_NAME = 'Chefre'
 AGENT = object
 
 
