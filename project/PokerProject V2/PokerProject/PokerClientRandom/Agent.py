@@ -1,7 +1,7 @@
 __author__ = 'fyt'
 
 # TODO resolve error when discarding cards (IndexError? picture in /debug)
-# TODO resolve disconnection issue (SHITTY SERVER ¤%(#¤&(#)(%)
+# TODO resolve disconnection issue (SHITTY server)
 
 import random
 import ClientBase
