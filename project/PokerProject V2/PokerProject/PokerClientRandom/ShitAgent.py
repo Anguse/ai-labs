@@ -215,9 +215,9 @@ def queryPlayerName(_name):
 def queryOpenAction(_minimumPotAfterOpen, _playersCurrentBet, _playersRemainingChips):
     print("Player requested to choose an opening action.")
     global AGENT, OPPONENTS
-    if AGENT.hand_rank > 0.8:
+    if AGENT.hand_fcrp > 0.8:
         return ClientBase.BettingAnswer.ACTION_CHECK
-    elif AGENT.hand_rank < 0.2:
+    elif AGENT.hand_fcrp < 0.2:
         return ClientBase.BettingAnswer.ACTION_ALLIN
     else:
         return ClientBase.BettingAnswer.ACTION_OPEN, (random.randint(0, 10) + _minimumPotAfterOpen)
@@ -249,11 +249,11 @@ def queryCallRaiseAction(_maximumBet, _minimumAmountToRaiseTo, _playersCurrentBe
     global AGENT,OPPONENTS
     print 'Handclass: ', AGENT.hand_class
 
-    if AGENT.hand_rank > 0.8:
+    if AGENT.hand_fcrp > 0.8:
         return ClientBase.BettingAnswer.ACTION_FOLD
-    elif 0.8 > AGENT.hand_rank > 0.6 and AGENT.chips >= _maximumBet:
+    elif 0.8 > AGENT.hand_fcrp > 0.6 and AGENT.chips >= _maximumBet:
         return ClientBase.BettingAnswer.ACTION_CALL
-    elif AGENT.hand_rank < 0.2:
+    elif AGENT.hand_fcrp < 0.2:
         return ClientBase.BettingAnswer.ACTION_ALLIN
 
     # Random Open Action
@@ -318,6 +318,7 @@ def infoNewRound(_round):
 
 def infoGameOver():
     print('The game is over.')
+    exit()
 
 
 '''

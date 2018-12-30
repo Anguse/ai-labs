@@ -551,9 +551,10 @@ def getOpenAction(_minimumPotAfterOpen, _playersCurrentBet, _playersRemainingChi
     global AGENT, OPPONENTS, open_clf
 
     actions = []
-    if AGENT.hand_rank < 0.3:
+    print AGENT.hand_fcrp
+    if AGENT.hand_fcrp < 0.3:
         actions.append('All-in')
-    if AGENT.hand_rank > 0.8:
+    if AGENT.hand_fcrp > 0.8:
         actions.append('Check')
 
     for i in range(2, 12, 2):
@@ -584,10 +585,11 @@ def getOpenAction(_minimumPotAfterOpen, _playersCurrentBet, _playersRemainingChi
 def getCallRaiseAction(_maximumBet, _minimumAmountToRaiseTo, _playersCurrentBet, _playersRemainingChips):
     global AGENT, OPPONENTS, respond_clf
 
+    print AGENT.hand_fcrp
     actions = []
-    if AGENT.hand_rank > 0.2:
+    if AGENT.hand_fcrp > 0.2:
         actions.append('Fold')
-    if AGENT.hand_rank < 0.8:
+    if AGENT.hand_fcrp < 0.8:
         actions.append('All-in')
 
     for i in range(2, 12, 2):
